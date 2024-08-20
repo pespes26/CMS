@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Course</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"] {
+            margin-right: 10px;
+            padding: 5px;
+            font-size: 1em;
+        }
+        input[type="submit"] {
+            padding: 5px 10px;
+            font-size: 1em;
+        }
+        a {
+            margin-top: 20px;
+            display: block;
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit Course</h1>
+    <form action="{{ url_for('update_course', id=course.id) }}" method="post">
+        <input type="text" name="name" value="{{ course.name }}" required>
+        <input type="text" name="courseID" value="{{ course.courseID }}" required>
+        <input type="text" name="description" value="{{ course.description }}">
+        <input type="submit" value="Update Course">
+    </form>
+    <a href="{{ url_for('index') }}">Back to course list</a>
+</body>
+</html>
