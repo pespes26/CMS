@@ -1,0 +1,28 @@
+h1 {
+    font-family: "Courier New", Courier, monospace;
+}
+nav {
+    position: absolute;
+    left: 0;
+    width: 180px; /* Adjust the width as needed */
+    margin-left: 0px; /* Move the menu further to the left */
+}
+nav a {
+    display: block;
+    padding: 10px;
+    color: black;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    border-left: 3px solid transparent; /* Adds space and allows styling */
+}
+nav a:hover {
+    background-color: #f0f0f0;
+    border-left: 5px solid #000; /* Highlight effect on hover */
+}
+nav a:visited {
+    color: black;
+}
+body {
+    margin-left: 600px; /* Adjust to add space on the left for the content */
+}

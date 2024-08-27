@@ -1,98 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course List</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        h1, h2, h3 {
-            font-size: 2em;
-        }
-        form {
-            margin-top: 20px;
-        }
-        input[type="text"] {
-            margin-right: 10px;
-            padding: 5px;
-            font-size: 1em;
-        }
-        input[type="submit"] {
-            padding: 5px 10px;
-            font-size: 1em;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 10px;
-        }
-        a {
-            margin-left: 10px;
-            text-decoration: none;
-            color: #007bff;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
-    <script>
-        function addLectureTime() {
-            var div = document.createElement('div');
-            div.className = 'lecture-time';
-            div.innerHTML = `
-                <input type="text" name="lecture_days[]" placeholder="Lecture Day" required>
-                <input type="text" name="lecture_times[]" placeholder="Lecture Time" required>
-                <br><br>
-            `;
-            document.getElementById('lecture-times').appendChild(div);
-        }
-    </script>
-</head>
-<body>
-    <h1>Courses</h1>
-    <ul>
-        {% for course in courses %}
-            <li>
-                <strong>{{ course.courseID }} - {{ course.name }}</strong><br>
-                {{ course.description }}<br>
-                <em>Lectures:</em><br>
-                {% for lecture in course.lecture_times %}
-                    {{ lecture.day }} at {{ lecture.time }}<br>
-                {% endfor %}
-                {% if course.practice_day and course.practice_time %}
-                    <em>Practice:</em> {{ course.practice_day }} at {{ course.practice_time }}<br>
-                {% endif %}
-                <a href="{{ url_for('edit_course', id=course.id) }}">Edit</a>
-                <a href="{{ url_for('delete_course', id=course.id) }}" style="color: red;">Delete</a>
-            </li>
-        {% endfor %}
-    </ul>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Course Management System</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="landing-page">
+      <div class="login-box">
+        <h1>Welcome to the Course Management System</h1>
+        <form id="loginForm">
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter Password"
+            required
+          />
+          <button type="submit">Login</button>
+        </form>
+        <p id="clock"></p>
+      </div>
+    </div>
 
-    <h2>Add a new course</h2>
-    <form action="{{ url_for('add_course') }}" method="post">
-        <input type="text" name="name" placeholder="Course Name" required>
-        <input type="text" name="courseID" placeholder="Course Number" required>
-        <input type="text" name="description" placeholder="Description">
-
-        <h3>Lecture Times</h3>
-        <div id="lecture-times">
-            <div class="lecture-time">
-                <input type="text" name="lecture_days[]" placeholder="Lecture Day" required>
-                <input type="text" name="lecture_times[]" placeholder="Lecture Time" required>
-                <br><br>
-            </div>
-        </div>
-        <button type="button" onclick="addLectureTime()">Add Another Lecture Time</button>
-
-        <h3>Practice Time</h3>
-        <input type="text" name="practice_day" placeholder="Practice Day (e.g., Wednesday)">
-        <input type="text" name="practice_time" placeholder="Practice Time (e.g., 2:00 PM)">
-
-        <input type="submit" value="Add Course">
-    </form>
-</body>
+    <div class="dashboard">
+      <aside class="sidebar">
+        <ul>
+          <li><a href="courses.html">Courses List</a></li>
+          <li><a href="timetable.html">Timetable</a></li>
+          <li><a href="add_course.html">Add Course</a></li>
+          <li><a href="edit_delete_course.html">Edit/Delete Courses</a></li>
+          <li><a href="preferences.html">Edit Preferences</a></li>
+          <li><a href="generate_table.html">Generate New Table</a></li>
+        </ul>
+      </aside>
+      <main class="content">
+        <!-- Main content will be loaded here -->
+      </main>
+    </div>
+  </body>
 </html>
