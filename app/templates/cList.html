@@ -4,17 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Courses List</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
   </head>
   <body>
     <h1>Courses List</h1>
     <nav>
-      <a href="cTable.html">Time Table</a><br />
-      <a href="addCourse.html">Add Course</a><br />
-      <a href="editCourse.html">Edit Courses</a><br />
-      <a href="editPer.html">Edit Preferences</a><br />
-      <a href="geneTable.html">Generate New Table</a><br />
-      <a href="landing.html">Home Page</a><br />
+      <a href="{{ url_for('timetable') }}">Time Table</a><br />
+      <a href="{{ url_for('add_course') }}">Add Course</a><br />
+      <a href="{{ url_for('edit_course') }}">Edit Courses</a><br />
+      <a href="{{ url_for('edit_pre') }}">Edit Preferences</a><br />
+      <a href="{{ url_for('genetable') }}">Generate New Table</a><br />
+      <a href="{{ url_for('index') }}">Home Page</a><br />
     </nav>
   </body>
 </html>
