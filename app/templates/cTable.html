@@ -3,21 +3,123 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Courses Table</title>
+    <title>Timetable</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='styles.css') }}"
     />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav {
+        width: 200px;
+        padding: 20px;
+        background-color: #f8f8f8;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        height: 100vh;
+        box-sizing: border-box;
+        position: fixed;
+        left: 0;
+        top: 0;
+      }
+
+      nav a {
+        display: block;
+        padding: 10px 0;
+        color: black;
+        text-decoration: none;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      nav a:hover {
+        background-color: #e0e0e0;
+        border-left: 5px solid #73a4dd;
+        padding-left: 10px;
+      }
+
+      .content-wrapper {
+        margin-left: 220px;
+        padding: 20px;
+        width: calc(100% - 240px);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        table-layout: fixed; /* Ensures the columns take up equal space */
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #73a4dd;
+        color: white;
+      }
+
+      td {
+        background-color: #fff;
+        min-height: 50px;
+      }
+
+      .time-col {
+        width: 10%;
+        background-color: #f0f0f0;
+      }
+
+      .day-col {
+        width: 18%;
+      }
+    </style>
   </head>
   <body>
-    <h1>Course Table</h1>
     <nav>
-      <a href="{{ url_for('courses') }}">Course List</a><br />
-      <a href="{{ url_for('add_course') }}">Add Course</a><br />
-      <a href="{{ url_for('edit_course') }}">Edit Courses</a><br />
-      <a href="{{ url_for('edit_pre') }}">Edit Preferences</a><br />
-      <a href="{{ url_for('genetable') }}">Generate New Table</a><br />
-      <a href="{{ url_for('index') }}">Home Page</a><br />
+      <a href="{{ url_for('courses') }}">Course List</a>
+      <a href="{{ url_for('add_course') }}">Add Course</a>
+      <a href="{{ url_for('edit_course') }}">Edit Courses</a>
+      <a href="{{ url_for('edit_pre') }}">Edit Preferences</a>
+      <a href="{{ url_for('genetable') }}">Generate New Table</a>
+      <a href="{{ url_for('index') }}">Home Page</a>
     </nav>
+
+    <div class="content-wrapper">
+      <h1>Timetable</h1>
+      <table>
+        <thead>
+          <tr>
+            <th class="time-col">Time</th>
+            <th class="day-col">Sunday</th>
+            <th class="day-col">Monday</th>
+            <th class="day-col">Tuesday</th>
+            <th class="day-col">Wednesday</th>
+            <th class="day-col">Thursday</th>
+            <th class="day-col">Friday</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for hour in range(8, 22) %}
+          <tr>
+            <td class="time-col">{{ hour }}:00 - {{ hour + 1 }}:00</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </body>
 </html>

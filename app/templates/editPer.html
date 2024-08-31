@@ -3,21 +3,146 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Course</title>
+    <title>Edit Preferences</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='styles.css') }}"
     />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        margin: 0;
+        padding: 0;
+      }
+      nav {
+        width: 200px;
+        padding: 20px;
+        background-color: #f8f8f8;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        height: 100vh;
+        box-sizing: border-box;
+        position: fixed;
+        left: 0;
+        top: 0;
+      }
+      nav a {
+        display: block;
+        padding: 10px 0;
+        color: black;
+        text-decoration: none;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+      nav a:hover {
+        background-color: #e0e0e0;
+        border-left: 5px solid #4caf50;
+        padding-left: 10px;
+      }
+      .content-wrapper {
+        margin-left: 220px;
+        padding: 20px;
+        width: calc(100% - 240px);
+      }
+      h1 {
+        margin-top: 0;
+      }
+      form {
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 20px;
+      }
+      label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        font-size: 16px;
+      }
+      button {
+        padding: 10px 15px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
   </head>
   <body>
-    <h1>Edit Preferences</h1>
     <nav>
-      <a href="{{ url_for('courses') }}">Course List</a><br />
-      <a href="{{ url_for('timetable') }}">Courses Table</a><br />
-      <a href="{{ url_for('add_course') }}">Add Course</a><br />
-      <a href="{{ url_for('edit_course') }}">Edit Course</a><br />
-      <a href="{{ url_for('genetable') }}">Generate New Table</a><br />
-      <a href="{{ url_for('index') }}">Home Page</a><br />
+      <a href="{{ url_for('courses') }}">Course List</a>
+      <a href="{{ url_for('timetable') }}">Courses Table</a>
+      <a href="{{ url_for('add_course') }}">Add Course</a>
+      <a href="{{ url_for('edit_course') }}">Edit Courses</a>
+      <a href="{{ url_for('genetable') }}">Generate New Table</a>
+      <a href="{{ url_for('index') }}">Home Page</a>
     </nav>
+    <div class="content-wrapper">
+      <h1>Edit Preferences</h1>
+      <form method="POST" action="{{ url_for('edit_pre') }}">
+        <h2>Scheduling Preference</h2>
+        <label for="schedule_pref">Choose your scheduling preference:</label>
+        <select name="schedule_pref" id="schedule_pref" required>
+          <option value="long_days">Long day - fewer days</option>
+          <option value="short_days">Short school days - more days</option>
+        </select>
+
+        <h2>Priority Courses</h2>
+        <label for="priority_course_1">Priority Course 1:</label>
+        <select name="priority_course_1" id="priority_course_1">
+          <option value="" selected disabled>Select a course...</option>
+          {% for course in courses %}
+          <option value="{{ course.id }}">{{ course.name }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="priority_course_2">Priority Course 2:</label>
+        <select name="priority_course_2" id="priority_course_2">
+          <option value="" selected disabled>Select a course...</option>
+          {% for course in courses %}
+          <option value="{{ course.id }}">{{ course.name }}</option>
+          {% endfor %}
+        </select>
+
+        <h2>Time Lapse Restrictions</h2>
+        <label for="no_course_day">Select Day:</label>
+        <select name="no_course_day" id="no_course_day" required>
+          <option value="Sunday">Sunday</option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+        </select>
+
+        <label for="no_course_time_start">Start of time lapse (HH:MM):</label>
+        <input
+          type="time"
+          name="no_course_time_start"
+          id="no_course_time_start"
+          required
+        />
+
+        <label for="no_course_time_end">End of time lapse (HH:MM):</label>
+        <input
+          type="time"
+          name="no_course_time_end"
+          id="no_course_time_end"
+          required
+        />
+
+        <button type="submit">Save Preferences</button>
+      </form>
+    </div>
   </body>
 </html>

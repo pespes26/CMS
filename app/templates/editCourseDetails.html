@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Course Details</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        margin: 0;
+        padding: 0;
+      }
+      nav {
+        width: 200px;
+        padding: 20px;
+        background-color: #f8f8f8;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        height: 100vh; /* Full height */
+        box-sizing: border-box;
+        position: fixed;
+        left: 0;
+        top: 0;
+      }
+      nav a {
+        display: block;
+        padding: 10px 0;
+        color: black;
+        text-decoration: none;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+      nav a:hover {
+        background-color: #e0e0e0;
+        border-left: 5px solid #4caf50;
+        padding-left: 10px;
+      }
+      .content-wrapper {
+        margin-left: 220px; /* Adjust this based on the nav width */
+        padding: 20px;
+        width: calc(100% - 240px); /* Ensure the content stays within bounds */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      h1 {
+        margin-top: 0;
+      }
+      form {
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 20px;
+        text-align: left;
+      }
+      label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        font-size: 16px;
+      }
+      button {
+        padding: 10px 15px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #1b0799;
+      }
+      .delete-btn {
+        background-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="{{ url_for('courses') }}">Course List</a>
+      <a href="{{ url_for('timetable') }}">Courses Table</a>
+      <a href="{{ url_for('add_course') }}">Add Course</a>
+      <a href="{{ url_for('edit_pre') }}">Edit Preferences</a>
+      <a href="{{ url_for('genetable') }}">Generate New Table</a>
+      <a href="{{ url_for('index') }}">Home Page</a>
+    </nav>
+    <div class="content-wrapper">
+      <div class="content">
+        <h1>Edit Course Details</h1>
+        <h2>{{ course.name }} (ID: {{ course.courseID }})</h2>
+
+        <form
+          method="POST"
+          action="{{ url_for('edit_course_details', course_id=course.id) }}"
+        >
+          <label for="edit_choice">What would you like to edit?</label>
+          <select name="edit_choice" id="edit_choice" required>
+            <option value="select" disabled selected>Select...</option>
+            <option value="lecture">Lectures</option>
+            <option value="practice">Practices</option>
+          </select>
+
+          <div id="lecture_fields" style="display: none">
+            <h3>Edit Lecture</h3>
+            <label for="lecture_id">Select Lecture:</label>
+            <select name="lecture_id" required>
+              {% for lecture in course.lecture_times %}
+              <option value="{{ lecture.id }}">
+                {{ lecture.day }}: {{ lecture.start_time }} - {{
+                lecture.end_time }}
+              </option>
+              {% endfor %}
+            </select>
+            <label for="day">Day:</label>
+            <select name="day">
+              <option value="Sunday">Sunday</option>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+            </select>
+            <label for="start_time">Start Time:</label>
+            <input type="text" name="start_time" placeholder="HH" disabled />
+            <label for="end_time">End Time:</label>
+            <input type="text" name="end_time" placeholder="HH" disabled />
+            <label for="building">Building:</label>
+            <input type="text" name="building" placeholder="0-97" disabled />
+            <label for="classroom">Classroom:</label>
+            <input type="text" name="classroom" placeholder="1-350" disabled />
+          </div>
+
+          <div id="practice_fields" style="display: none">
+            <h3>Edit Practice</h3>
+            <label for="practice_id">Select Practice:</label>
+            <select name="practice_id" required>
+              {% for practice in course.practice_times %}
+              <option value="{{ practice.id }}">
+                {{ practice.day }}: {{ practice.start_time }} - {{
+                practice.end_time }}
+              </option>
+              {% endfor %}
+            </select>
+            <label for="day">Day:</label>
+            <select name="day">
+              <option value="Sunday">Sunday</option>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+            </select>
+            <label for="start_time">Start Time:</label>
+            <input type="text" name="start_time" placeholder="HH" disabled />
+            <label for="end_time">End Time:</label>
+            <input type="text" name="end_time" placeholder="HH" disabled />
+            <label for="building">Building:</label>
+            <input type="text" name="building" placeholder="0-97" disabled />
+            <label for="classroom">Classroom:</label>
+            <input type="text" name="classroom" placeholder="0-350" disabled />
+          </div>
+
+          <button type="submit">Save Changes</button>
+        </form>
+
+        <form
+          method="POST"
+          action="{{ url_for('delete_course', course_id=course.id) }}"
+        >
+          <button type="submit" class="delete-btn">Delete Course</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document;
+      document
+        .getElementById("edit_choice")
+        .addEventListener("change", function () {
+          var choice = this.value;
+
+          // Hide and disable fields
+          var lectureFields = document.getElementById("lecture_fields");
+          var practiceFields = document.getElementById("practice_fields");
+
+          if (choice === "lecture") {
+            lectureFields.style.display = "block";
+            practiceFields.style.display = "none";
+
+            // Enable lecture fields
+            enableFields(lectureFields);
+            disableFields(practiceFields);
+          } else if (choice === "practice") {
+            practiceFields.style.display = "block";
+            lectureFields.style.display = "none";
+
+            // Enable practice fields
+            enableFields(practiceFields);
+            disableFields(lectureFields);
+          } else {
+            lectureFields.style.display = "none";
+            practiceFields.style.display = "none";
+
+            // Disable all fields
+            disableFields(lectureFields);
+            disableFields(practiceFields);
+          }
+        });
+
+      function disableFields(fieldset) {
+        const inputs = fieldset.querySelectorAll("input, select");
+        inputs.forEach((input) => {
+          input.required = false;
+          input.disabled = true;
+        });
+      }
+
+      function enableFields(fieldset) {
+        const inputs = fieldset.querySelectorAll("input, select");
+        inputs.forEach((input) => {
+          input.required = true;
+          input.disabled = false;
+        });
+      }
+    </script>
+  </body>
+</html>

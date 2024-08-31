@@ -8,16 +8,326 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='styles.css') }}"
     />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav {
+        width: 200px;
+        padding: 20px;
+        background-color: #f8f8f8;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        height: 100vh;
+        box-sizing: border-box;
+        position: fixed;
+        left: 0;
+        top: 0;
+      }
+
+      nav a {
+        display: block;
+        padding: 10px 0;
+        color: black;
+        text-decoration: none;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      nav a:hover {
+        background-color: #e0e0e0;
+        border-left: 5px solid #73a4dd;
+        padding-left: 10px;
+      }
+
+      .content-wrapper {
+        margin-left: 220px;
+        padding: 20px;
+        width: calc(100% - 240px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h1 {
+        margin-top: 0;
+      }
+
+      form {
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 20px;
+        text-align: left;
+      }
+      .add-course-btn {
+        background-color: #4caf50; /* Change this to your desired color */
+        color: white; /* Text color */
+        border: none; /* Remove border */
+        padding: 10px 20px; /* Padding for the button */
+        font-size: 17px; /* Font size */
+        cursor: pointer; /* Cursor pointer on hover */
+      }
+
+      .add-course-btn:hover {
+        background-color: #45a049; /* Slightly darker shade for hover effect */
+      }
+
+      label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        font-size: 16px;
+      }
+
+      button {
+        padding: 10px 15px;
+        background-color: #73a4dd;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background-color: #73a4dd;
+      }
+
+      .delete-btn {
+        background-color: red;
+      }
+
+      .lecture,
+      .practice {
+        background-color: #f0f0f0;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+      }
+
+      .lecture-title,
+      .practice-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Add Course</h1>
     <nav>
-      <a href="{{ url_for('courses') }}">Courses List</a><br />
-      <a href="{{ url_for('timetable') }}">Time Table</a><br />
-      <a href="{{ url_for('edit_course') }}">Edit Course</a><br />
-      <a href="{{ url_for('edit_pre') }}">Edit Preferences</a><br />
-      <a href="{{ url_for('genetable') }}">Generate New Table</a><br />
-      <a href="{{ url_for('index') }}">Home Page</a><br />
+      <a href="{{ url_for('courses') }}">Courses List</a>
+      <a href="{{ url_for('timetable') }}">Time Table</a>
+      <a href="{{ url_for('edit_course') }}">Edit Course</a>
+      <a href="{{ url_for('edit_pre') }}">Edit Preferences</a>
+      <a href="{{ url_for('genetable') }}">Generate New Table</a>
+      <a href="{{ url_for('index') }}">Home Page</a>
     </nav>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <h1>Add Course</h1>
+
+        <form action="{{ url_for('add_course') }}" method="POST">
+          <label for="name">Course Name:</label><br />
+          <input type="text" id="name" name="name" required /><br /><br />
+
+          <label for="courseID">Course ID:</label><br />
+          <input
+            type="text"
+            id="courseID"
+            name="courseID"
+            required
+          /><br /><br />
+
+          <h3>Lectures</h3>
+          <div id="lectures" class="flex-container">
+            <!-- Initial Lecture Slot -->
+            <div class="lecture">
+              <div class="lecture-title">Lecture 1</div>
+              <label for="lecture_day">Lecture Day:</label><br />
+              <select name="lecture_days[]" required>
+                <option value="Sunday">Sunday</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option></select
+              ><br /><br />
+
+              <label for="lecture_start_time">Start Time:</label><br />
+              <input
+                type="text"
+                name="lecture_start_time[]"
+                placeholder="HH"
+                required
+              /><br /><br />
+
+              <label for="lecture_end_time">End Time:</label><br />
+              <input
+                type="text"
+                name="lecture_end_time[]"
+                placeholder="HH"
+                required
+              /><br /><br />
+
+              <label for="lecture_building">Building:</label><br />
+              <input
+                type="text"
+                name="lecture_building[]"
+                placeholder="1-97 , 0 to 'Online'"
+                required
+              /><br /><br />
+
+              <label for="lecture_classroom">Classroom:</label><br />
+              <input
+                type="text"
+                name="lecture_classroom[]"
+                placeholder="1-350, 0 to 'Online'"
+                required
+              /><br /><br />
+            </div>
+          </div>
+          <button type="button" onclick="addLecture()">
+            Add Another Lecture</button
+          ><br /><br />
+
+          <h3>Practices</h3>
+          <div id="practices" class="flex-container">
+            <!-- Initial Practice Slot -->
+            <div class="practice">
+              <div class="practice-title">Practice 1</div>
+              <label for="practice_day">Practice Day:</label><br />
+              <select name="practice_days[]" required>
+                <option value="Sunday">Sunday</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option></select
+              ><br /><br />
+
+              <label for="practice_start_time">Start Time:</label><br />
+              <input
+                type="text"
+                name="practice_start_time[]"
+                placeholder="HH"
+                required
+              /><br /><br />
+
+              <label for="practice_end_time">End Time:</label><br />
+              <input
+                type="text"
+                name="practice_end_time[]"
+                placeholder="HH"
+                required
+              /><br /><br />
+
+              <label for="practice_building">Building:</label><br />
+              <input
+                type="text"
+                name="practice_building[]"
+                placeholder="1-97 , 0 to 'Online' "
+                required
+              /><br /><br />
+
+              <label for="practice_classroom">Classroom:</label><br />
+              <input
+                type="text"
+                name="practice_classroom[]"
+                placeholder="1-350 ,0 to 'Online'"
+                required
+              /><br /><br />
+            </div>
+          </div>
+          <button type="button" onclick="addPractice()">
+            Add Another Practice</button
+          ><br /><br />
+
+          <input type="submit" value="Add Course" class="add-course-btn" />
+        </form>
+      </div>
+    </div>
+
+    <script>
+      let lectureCount = 1;
+      let practiceCount = 1;
+
+      function addLecture() {
+        lectureCount++;
+        let lectureDiv = document.createElement("div");
+        lectureDiv.classList.add("lecture");
+
+        lectureDiv.innerHTML = `
+          <div class="lecture-title">Lecture ${lectureCount}</div>
+          <label for="lecture_day">Lecture Day:</label><br />
+          <select name="lecture_days[]" required>
+              <option value="Sunday">Sunday</option>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+          </select><br /><br />
+
+          <label for="lecture_start_time">Start Time:</label><br />
+          <input type="text" name="lecture_start_time[]" placeholder="HH" required /><br /><br />
+
+          <label for="lecture_end_time">End Time:</label><br />
+          <input type="text" name="lecture_end_time[]" placeholder="HH" required /><br /><br />
+
+          <label for="lecture_building">Building:</label><br />
+          <input type="text" name="lecture_building[]" placeholder="1-97" required /><br /><br />
+
+          <label for="lecture_classroom">Classroom:</label><br />
+          <input type="text" name="lecture_classroom[]" placeholder="1-350" required /><br /><br />
+        `;
+
+        document.getElementById("lectures").appendChild(lectureDiv);
+      }
+
+      function addPractice() {
+        practiceCount++;
+        let practiceDiv = document.createElement("div");
+        practiceDiv.classList.add("practice");
+
+        practiceDiv.innerHTML = `
+          <div class="practice-title">Practice ${practiceCount}</div>
+          <label for="practice_day">Practice Day:</label><br />
+          <select name="practice_days[]" required>
+              <option value="Sunday">Sunday</option>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+          </select><br /><br />
+
+          <label for="practice_start_time">Start Time:</label><br />
+          <input type="text" name="practice_start_time[]" placeholder="HH" required /><br /><br />
+
+          <label for="practice_end_time">End Time:</label><br />
+          <input type="text" name="practice_end_time[]" placeholder="HH" required /><br /><br />
+
+          <label for="practice_building">Building:</label><br />
+          <input type="text" name="practice_building[]" placeholder="1-97" required /><br /><br />
+
+          <label for="practice_classroom">Classroom:</label><br />
+          <input type="text" name="practice_classroom[]" placeholder="1-350" required /><br /><br />
+        `;
+
+        document.getElementById("practices").appendChild(practiceDiv);
+      }
+    </script>
   </body>
 </html>
