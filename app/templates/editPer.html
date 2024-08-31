@@ -11,10 +11,11 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-        display: flex;
         margin: 0;
         padding: 0;
+        display: flex;
       }
+
       nav {
         width: 200px;
         padding: 20px;
@@ -26,6 +27,7 @@
         left: 0;
         top: 0;
       }
+
       nav a {
         display: block;
         padding: 10px 0;
@@ -34,29 +36,48 @@
         font-size: 16px;
         margin-bottom: 10px;
       }
+
       nav a:hover {
         background-color: #e0e0e0;
-        border-left: 5px solid #4caf50;
+        border-left: 5px solid #73a4dd;
         padding-left: 10px;
       }
+
       .content-wrapper {
         margin-left: 220px;
         padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: calc(100% - 240px);
+        height: 100vh;
       }
-      h1 {
-        margin-top: 0;
-      }
-      form {
+
+      .form-container {
         width: 100%;
         max-width: 600px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        margin-top: 0;
+        text-align: center;
+      }
+
+      form {
+        width: 100%;
         margin-bottom: 20px;
       }
+
       label {
         font-weight: bold;
         display: block;
         margin-bottom: 5px;
       }
+
       input,
       select {
         width: 100%;
@@ -65,18 +86,61 @@
         box-sizing: border-box;
         font-size: 16px;
       }
+
       button {
         padding: 10px 15px;
-        background-color: #4caf50;
+        background-color: #73a4dd;
         color: white;
         border: none;
         cursor: pointer;
         font-size: 16px;
+        display: block;
+        width: 100%;
       }
+
       button:hover {
         background-color: #45a049;
       }
+
+      .remove-btn {
+        background-color: #ff6347;
+        margin-left: 10px;
+      }
+
+      .remove-btn:hover {
+        background-color: #e55342;
+      }
     </style>
+    <script>
+      function addRestrictedTime() {
+        const container = document.getElementById("restricted-times-container");
+        const div = document.createElement("div");
+        div.className = "restricted-time-item";
+
+        div.innerHTML = `
+          <label for="no_course_day">Select Day:</label>
+          <select name="no_course_day[]" required>
+            <option value="Sunday">Sunday</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+          </select>
+          <label for="no_course_time_start">Start of time lapse (HH:MM):</label>
+          <input type="time" name="no_course_time_start[]" required />
+          <label for="no_course_time_end">End of time lapse (HH:MM):</label>
+          <input type="time" name="no_course_time_end[]" required />
+          <button type="button" class="remove-btn" onclick="removeRestrictedTime(this)">Remove</button>
+        `;
+
+        container.appendChild(div);
+      }
+
+      function removeRestrictedTime(button) {
+        button.parentElement.remove();
+      }
+    </script>
   </head>
   <body>
     <nav>
@@ -88,61 +152,43 @@
       <a href="{{ url_for('index') }}">Home Page</a>
     </nav>
     <div class="content-wrapper">
-      <h1>Edit Preferences</h1>
-      <form method="POST" action="{{ url_for('edit_pre') }}">
-        <h2>Scheduling Preference</h2>
-        <label for="schedule_pref">Choose your scheduling preference:</label>
-        <select name="schedule_pref" id="schedule_pref" required>
-          <option value="long_days">Long day - fewer days</option>
-          <option value="short_days">Short school days - more days</option>
-        </select>
+      <div class="form-container">
+        <h1>Edit Preferences</h1>
+        <form method="POST" action="{{ url_for('edit_pre') }}">
+          <h2>Scheduling Preference</h2>
+          <label for="schedule_pref">Choose your scheduling preference:</label>
+          <select name="schedule_pref" id="schedule_pref" required>
+            <option value="long_days">Long day - fewer days</option>
+            <option value="short_days">Short school days - more days</option>
+          </select>
 
-        <h2>Priority Courses</h2>
-        <label for="priority_course_1">Priority Course 1:</label>
-        <select name="priority_course_1" id="priority_course_1">
-          <option value="" selected disabled>Select a course...</option>
-          {% for course in courses %}
-          <option value="{{ course.id }}">{{ course.name }}</option>
-          {% endfor %}
-        </select>
+          <h2>Priority Courses (Optional)</h2>
+          <label for="priority_course_1">Priority Course 1:</label>
+          <select name="priority_course_1" id="priority_course_1">
+            <option value="" selected disabled>Select a course...</option>
+            {% for course in courses %}
+            <option value="{{ course.id }}">{{ course.name }}</option>
+            {% endfor %}
+          </select>
 
-        <label for="priority_course_2">Priority Course 2:</label>
-        <select name="priority_course_2" id="priority_course_2">
-          <option value="" selected disabled>Select a course...</option>
-          {% for course in courses %}
-          <option value="{{ course.id }}">{{ course.name }}</option>
-          {% endfor %}
-        </select>
+          <label for="priority_course_2">Priority Course 2:</label>
+          <select name="priority_course_2" id="priority_course_2">
+            <option value="" selected disabled>Select a course...</option>
+            {% for course in courses %}
+            <option value="{{ course.id }}">{{ course.name }}</option>
+            {% endfor %}
+          </select>
 
-        <h2>Time Lapse Restrictions</h2>
-        <label for="no_course_day">Select Day:</label>
-        <select name="no_course_day" id="no_course_day" required>
-          <option value="Sunday">Sunday</option>
-          <option value="Monday">Monday</option>
-          <option value="Tuesday">Tuesday</option>
-          <option value="Wednesday">Wednesday</option>
-          <option value="Thursday">Thursday</option>
-          <option value="Friday">Friday</option>
-        </select>
+          <h2>Time Lapse Restrictions</h2>
+          <div id="restricted-times-container"></div>
+          <button type="button" onclick="addRestrictedTime()">
+            Add Restricted Time
+          </button>
 
-        <label for="no_course_time_start">Start of time lapse (HH:MM):</label>
-        <input
-          type="time"
-          name="no_course_time_start"
-          id="no_course_time_start"
-          required
-        />
-
-        <label for="no_course_time_end">End of time lapse (HH:MM):</label>
-        <input
-          type="time"
-          name="no_course_time_end"
-          id="no_course_time_end"
-          required
-        />
-
-        <button type="submit">Save Preferences</button>
-      </form>
+          <br /><br />
+          <button type="submit">Save Preferences</button>
+        </form>
+      </div>
     </div>
   </body>
 </html>

@@ -92,24 +92,18 @@
         <tbody>
           {% for course in courses %}
           <tr>
-            <td>{{ course.courseID }}</td>
+            <td>{{ course.courseid }}</td>
             <td>{{ course.name }}</td>
             <td>
-              {% for lecture in course.lecture_times %}
-              <p>
-                {{ lecture.day }}: {{ lecture.start_time.strftime('%H:%M') }} -
-                {{ lecture.end_time.strftime('%H:%M') }}<br />
-                Building {{ lecture.building }}, Room {{ lecture.classroom }}
-              </p>
+              {% for lecture in course.lectures %} {{ lecture.day }}: {{
+              lecture.start_time }} - {{ lecture.end_time }}<br />
+              Building {{ lecture.building }}, Room {{ lecture.classroom }}<br />
               {% endfor %}
             </td>
             <td>
-              {% for practice in course.practice_times %}
-              <p>
-                {{ practice.day }}: {{ practice.start_time.strftime('%H:%M') }}
-                - {{ practice.end_time.strftime('%H:%M') }}<br />
-                Building {{ practice.building }}, Room {{ practice.classroom }}
-              </p>
+              {% for practice in course.practices %} {{ practice.day }}: {{
+              practice.start_time }} - {{ practice.end_time }}<br />
+              Building {{ practice.building }}, Room {{ practice.classroom }}<br />
               {% endfor %}
             </td>
           </tr>

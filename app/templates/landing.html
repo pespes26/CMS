@@ -3,21 +3,171 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CMS</title>
+    <title>Course Management System</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='styles.css') }}"
     />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        margin: 0;
+        padding: 0;
+      }
+      nav {
+        width: 200px;
+        padding: 20px;
+        background-color: #f8f8f8;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        height: 100vh;
+        box-sizing: border-box;
+        position: fixed;
+        left: 0;
+        top: 0;
+      }
+      nav a {
+        display: block;
+        padding: 10px 0;
+        color: black;
+        text-decoration: none;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      nav a:hover {
+        background-color: #e0e0e0;
+        border-left: 5px solid #73a4dd;
+        padding-left: 10px;
+      }
+      .content-wrapper {
+        margin-left: 220px;
+        padding: 20px;
+        width: calc(100% - 240px);
+      }
+      h1 {
+        margin-top: 0;
+      }
+      .intro {
+        margin-bottom: 30px;
+      }
+      .section {
+        margin-bottom: 40px;
+      }
+      .section h2 {
+        font-size: 26px;
+        color: #415aa7;
+        border-bottom: 2px solid #b3b3b3;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+      .section p {
+        font-size: 18px;
+        line-height: 1.6;
+        color: #333;
+      }
+      .section ul {
+        margin: 20px 0;
+        padding: 0;
+        list-style: none;
+      }
+      .section ul li {
+        background: #f0f0f0;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-left: 4px solid #73a4dd;
+      }
+    </style>
   </head>
   <body>
-    <h1>Course Management System</h1>
     <nav>
-      <a href="{{ url_for('courses') }}">Courses List</a><br />
-      <a href="{{ url_for('timetable') }}">Time Table</a><br />
-      <a href="{{ url_for('add_course') }}">Add Course</a><br />
-      <a href="{{ url_for('edit_course') }}">Edit Courses</a><br />
-      <a href="{{ url_for('edit_pre') }}">Edit Preferences</a><br />
-      <a href="{{ url_for('genetable') }}">Generate New Table</a><br />
+      <a href="{{ url_for('courses') }}">Courses List</a>
+      <a href="{{ url_for('timetable') }}">Time Table</a>
+      <a href="{{ url_for('add_course') }}">Add Course</a>
+      <a href="{{ url_for('edit_course') }}">Edit Courses</a>
+      <a href="{{ url_for('edit_pre') }}">Edit Preferences</a>
+      <a href="{{ url_for('genetable') }}">Generate New Table</a>
     </nav>
+    <div class="content-wrapper">
+      <h1>Welcome to the Course Management System</h1>
+      <div class="intro">
+        <p>
+          This Course Management System is designed to help students and
+          administrators efficiently manage university courses, schedules, and
+          preferences. Whether you're adding a new course, editing existing
+          ones, or generating a personalized timetable, this system has got you
+          covered.
+        </p>
+      </div>
+
+      <div class="section">
+        <h2>Key Features</h2>
+        <ul>
+          <li>
+            <strong>Courses List:</strong> View all available courses in a
+            structured format.
+          </li>
+          <li>
+            <strong>Time Table:</strong> Access your current timetable with all
+            scheduled classes.
+          </li>
+          <li>
+            <strong>Add/Edit Courses:</strong> Easily add new courses or modify
+            details of existing ones.
+          </li>
+          <li>
+            <strong>Edit Preferences:</strong> Set your preferences for course
+            scheduling, such as preferred days and times.
+          </li>
+          <li>
+            <strong>Generate New Table:</strong> Create a new timetable based on
+            your preferences and course availability.
+          </li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>How to Use the System</h2>
+        <p>
+          To make the most out of the Course Management System, follow these
+          simple steps:
+        </p>
+        <ul>
+          <li>
+            <strong>Step 1:</strong> Start by exploring the
+            <a href="{{ url_for('courses') }}">Courses List</a> to see all
+            available courses.
+          </li>
+          <li>
+            <strong>Step 2:</strong> Add any new courses you wish to take using
+            the <a href="{{ url_for('add_course') }}">Add Course</a> feature.
+          </li>
+          <li>
+            <strong>Step 3:</strong> Go to
+            <a href="{{ url_for('edit_pre') }}">Edit Preferences</a> to set your
+            scheduling preferences, such as preferred days and restricted hours.
+          </li>
+          <li>
+            <strong>Step 4:</strong> Once your preferences are set, head over to
+            <a href="{{ url_for('genetable') }}">Generate New Table</a> to
+            create your personalized timetable.
+          </li>
+          <li>
+            <strong>Step 5:</strong> Review your generated timetable and save
+            it. You can view the final version in the
+            <a href="{{ url_for('timetable') }}">Time Table</a> section.
+          </li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Why Use This System?</h2>
+        <p>
+          This system is designed to streamline your course management process,
+          allowing you to focus on what truly matters: your studies. With
+          features like automatic timetable generation and easy course editing,
+          you'll save time and reduce the stress of manual scheduling.
+        </p>
+      </div>
+    </div>
   </body>
 </html>

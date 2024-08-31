@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash
 from app import app, db
-from app.models import Course, LectureTime, PracticeTime , UserPreferences
+from app.models import Course, LectureTime, PracticeTime , UserPreferences , FinalTimetable
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -10,7 +10,7 @@ def add_course():
         course_name = request.form.get('name')
         course_id = request.form.get('courseID')
 
-        new_course = Course(name=course_name, courseID=course_id)
+        new_course = Course(name=course_name, courseid=course_id)
         db.session.add(new_course)
         db.session.commit()
 
@@ -64,7 +64,6 @@ def add_course():
 
     return render_template('addCourse.html')
 
-
 @app.route('/')
 def index():
     return render_template('landing.html')
@@ -93,16 +92,16 @@ def edit_course():
 
 @app.route('/edit_course_details/<int:course_id>', methods=['GET', 'POST'])
 def edit_course_details(course_id):
+    # Fetch the course and handle 404 error if not found
     course = Course.query.get_or_404(course_id)
-
+    
     if request.method == 'POST':
         try:
             edit_choice = request.form.get('edit_choice')
-            print(f"Edit choice: {edit_choice}")
-
             if edit_choice == 'lecture':
                 lecture_id = request.form.get('lecture_id')
                 lecture = LectureTime.query.get_or_404(lecture_id)
+
                 lecture.day = request.form.get('day')
                 lecture.start_time = f"{request.form.get('start_time')}:00"
                 lecture.end_time = f"{request.form.get('end_time')}:00"
@@ -110,11 +109,14 @@ def edit_course_details(course_id):
                 classroom = request.form.get('classroom')
                 lecture.building = "Online" if building == '0' else building
                 lecture.classroom = "Online" if classroom == '0' else classroom
-                print(f"Lecture updated: {lecture}")
+
+                db.session.commit()
+                flash('Lecture updated successfully!', 'success')
 
             elif edit_choice == 'practice':
                 practice_id = request.form.get('practice_id')
                 practice = PracticeTime.query.get_or_404(practice_id)
+
                 practice.day = request.form.get('day')
                 practice.start_time = f"{request.form.get('start_time')}:00"
                 practice.end_time = f"{request.form.get('end_time')}:00"
@@ -122,17 +124,15 @@ def edit_course_details(course_id):
                 classroom = request.form.get('classroom')
                 practice.building = "Online" if building == '0' else building
                 practice.classroom = "Online" if classroom == '0' else classroom
-                print(f"Practice updated: {practice}")
 
-            db.session.commit()
-            print("Changes saved successfully")
+                db.session.commit()
+                flash('Practice updated successfully!', 'success')
 
         except SQLAlchemyError as e:
             db.session.rollback()
-            print(f"Error occurred: {e}")
-
+            flash(f'An error occurred: {str(e)}', 'danger')
         finally:
-            db.session.remove()  # Ensures the session is properly cleaned up
+            db.session.close()
 
         return redirect(url_for('edit_course_details', course_id=course.id))
 
@@ -155,42 +155,49 @@ def delete_course(course_id):
 
 @app.route('/edit_pre', methods=['GET', 'POST'])
 def edit_pre():
-    # Ensure the UserPreferences model is imported
-    user_prefs = UserPreferences.query.first()
-
     if request.method == 'POST':
+        # Get form data
         schedule_pref = request.form.get('schedule_pref')
-        priority_course_1_id = request.form.get('priority_course_1')
-        priority_course_2_id = request.form.get('priority_course_2')
-        no_course_day = request.form.get('no_course_day')
-        no_course_time_start = request.form.get('no_course_time_start')
-        no_course_time_end = request.form.get('no_course_time_end')
+        priority_course_1 = request.form.get('priority_course_1')
+        priority_course_2 = request.form.get('priority_course_2')
+        no_course_days = request.form.getlist('no_course_day')
+        no_course_times_start = request.form.getlist('no_course_time_start')
+        no_course_times_end = request.form.getlist('no_course_time_end')
 
-        if user_prefs:
-            user_prefs.schedule_pref = schedule_pref
-            user_prefs.priority_course_1_id = priority_course_1_id
-            user_prefs.priority_course_2_id = priority_course_2_id
-            user_prefs.no_course_day = no_course_day
-            user_prefs.no_course_time_start = no_course_time_start
-            user_prefs.no_course_time_end = no_course_time_end
-        else:
+        # Create a new UserPreferences object
+        try:
             new_prefs = UserPreferences(
                 schedule_pref=schedule_pref,
-                priority_course_1_id=priority_course_1_id,
-                priority_course_2_id=priority_course_2_id,
-                no_course_day=no_course_day,
-                no_course_time_start=no_course_time_start,
-                no_course_time_end=no_course_time_end
+                priority_course_1=priority_course_1 if priority_course_1 else None,
+                priority_course_2=priority_course_2 if priority_course_2 else None
             )
             db.session.add(new_prefs)
+            db.session.commit()
 
-        db.session.commit()
-        return redirect(url_for('index'))  # or any other page you want to redirect to after saving
+            # Now, handle the restricted time entries
+            for day, start_time, end_time in zip(no_course_days, no_course_times_start, no_course_times_end):
+                restricted_time = RestrictedTime(
+                    user_preferences_id=new_prefs.id,
+                    day=day,
+                    start_time=start_time,
+                    end_time=end_time
+                )
+                db.session.add(restricted_time)
+
+            db.session.commit()
+            return redirect(url_for('courses'))
+
+        except Exception as e:
+            db.session.rollback()
+            return str(e)
 
     courses = Course.query.all()
-    return render_template('editPer.html', user_prefs=user_prefs, courses=courses)
-
+    return render_template('editPer.html', courses=courses)
 
 @app.route('/genetable')
 def genetable():
     return render_template('geneTable.html')
+    
+
+
+

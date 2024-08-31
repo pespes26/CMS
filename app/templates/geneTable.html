@@ -3,21 +3,156 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Generate New Table</title>
+    <title>Generate Timetable</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='styles.css') }}"
     />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        margin: 0;
+        padding: 0;
+      }
+      nav {
+        width: 200px;
+        padding: 20px;
+        background-color: #f8f8f8;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        height: 100vh;
+        box-sizing: border-box;
+        position: fixed;
+        left: 0;
+        top: 0;
+      }
+      nav a {
+        display: block;
+        padding: 10px 0;
+        color: black;
+        text-decoration: none;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+      nav a:hover {
+        background-color: #e0e0e0;
+        border-left: 5px solid #4caf50;
+        padding-left: 10px;
+      }
+      .content-wrapper {
+        margin-left: 220px;
+        padding: 20px;
+        width: calc(100% - 240px);
+      }
+      h1 {
+        margin-top: 0;
+      }
+      .timetable-container {
+        margin-top: 20px;
+      }
+      .timetable {
+        margin-bottom: 20px;
+      }
+      .timetable table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .timetable th,
+      .timetable td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+      }
+      .timetable th {
+        background-color: #415aa7;
+        color: white;
+      }
+      .timetable td {
+        background-color: #fff;
+        min-height: 50px;
+      }
+      .time-col {
+        width: 10%;
+        background-color: #f0f0f0;
+      }
+      .day-col {
+        width: 18%;
+      }
+      button {
+        padding: 10px 15px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
   </head>
   <body>
-    <h1>Generate New Table</h1>
     <nav>
-      <a href="{{ url_for('courses') }}">Course List</a><br />
-      <a href="{{ url_for('timetable') }}">Courses Table</a><br />
-      <a href="{{ url_for('add_course') }}">Add Course</a><br />
-      <a href="{{ url_for('edit_course')}}">Edit Course</a><br />
-      <a href="{{ url_for('edit_pre') }}">Edit Preferences</a><br />
-      <a href="{{ url_for('index') }}">Home Page</a><br />
+      <a href="{{ url_for('courses') }}">Course List</a>
+      <a href="{{ url_for('timetable') }}">Courses Table</a>
+      <a href="{{ url_for('add_course') }}">Add Course</a>
+      <a href="{{ url_for('edit_course') }}">Edit Courses</a>
+      <a href="{{ url_for('edit_pre') }}">Edit Preferences</a>
+      <a href="{{ url_for('index') }}">Home Page</a>
     </nav>
+    <div class="content-wrapper">
+      <h1>Generate Timetable</h1>
+      <h2>Your Preferences</h2>
+      <p><strong>Scheduling Preference:</strong> {{ user_prefs.schedule_pref }}</p>
+      <p><strong>Priority Course 1:</strong> {{ user_prefs.priority_course_1.name if user_prefs.priority_course_1 else "None" }}</p>
+      <p><strong>Priority Course 2:</strong> {{ user_prefs.priority_course_2.name if user_prefs.priority_course_2 else "None" }}</p>
+      <p><strong>Restricted Times:</strong> {{ user_prefs.no_course_day }} from {{ user_prefs.no_course_time_start }} to {{ user_prefs.no_course_time_end }}</p>
+
+      <h2>Your Generated Timetable</h2>
+
+      <form method="POST">
+          <div class="timetable-container">
+              <div class="timetable">
+                  <h3>Example Timetable</h3>
+                  <table>
+                      <thead>
+                          <tr>
+                              <th>Time</th>
+                              <th>Sunday</th>
+                              <th>Monday</th>
+                              <th>Tuesday</th>
+                              <th>Wednesday</th>
+                              <th>Thursday</th>
+                              <th>Friday</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% for day in ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] %}
+                          <tr>
+                              <td>{{ day }}</td>
+                              {% if example_timetable.get(day) %}
+                              <td>
+                                  {% for slot in example_timetable[day] %}
+                                  <div>
+                                      {{ slot.type }}: {{ slot.course }}<br />{{ slot.start_time }} - {{ slot.end_time }}
+                                  </div>
+                                  {% endfor %}
+                              </td>
+                              {% else %}
+                              <td></td> <!-- Empty cell for days with no scheduled courses -->
+                              {% endif %}
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+                  <input type="radio" name="selected_timetable" value="1" required> Choose this timetable
+              </div>
+          </div>
+      </div>
+
+      <form method="POST">
+        <button type="submit">Save Timetable</button>
+      </form>
+    </div>
   </body>
 </html>
