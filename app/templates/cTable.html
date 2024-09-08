@@ -52,7 +52,7 @@
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
-        table-layout: fixed; /* Ensures the columns take up equal space */
+        table-layout: fixed;
       }
 
       th,
@@ -80,13 +80,27 @@
       .day-col {
         width: 18%;
       }
+
+      /* Colors for lectures and practices */
+      .lecture {
+        background-color: #ffcccb; /* Light red for lectures */
+        color: black;
+        border-radius: 5px;
+        padding: 5px;
+      }
+
+      .practice {
+        background-color: #ccffcc; /* Light green for practices */
+        color: black;
+        border-radius: 5px;
+        padding: 5px;
+      }
     </style>
   </head>
   <body>
     <nav>
       <a href="{{ url_for('courses') }}">Course List</a>
       <a href="{{ url_for('add_course') }}">Add Course</a>
-      <a href="{{ url_for('edit_course') }}">Edit Courses</a>
       <a href="{{ url_for('edit_pre') }}">Edit Preferences</a>
       <a href="{{ url_for('genetable') }}">Generate New Table</a>
       <a href="{{ url_for('index') }}">Home Page</a>
@@ -97,25 +111,30 @@
       <table>
         <thead>
           <tr>
-            <th class="time-col">Time</th>
-            <th class="day-col">Sunday</th>
-            <th class="day-col">Monday</th>
-            <th class="day-col">Tuesday</th>
-            <th class="day-col">Wednesday</th>
-            <th class="day-col">Thursday</th>
-            <th class="day-col">Friday</th>
+            <th>Time</th>
+            <th>Sunday</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
           </tr>
         </thead>
         <tbody>
           {% for hour in range(8, 22) %}
           <tr>
-            <td class="time-col">{{ hour }}:00 - {{ hour + 1 }}:00</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{ hour }}:00 - {{ hour + 1 }}:00</td>
+            {% for day in ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
+            'Thursday', 'Friday'] %}
+            <td>
+              {% for course, slot in schedule %} {% if slot.day == day and
+              slot.start_time.hour <= hour < slot.end_time.hour %}
+              <div class="{{ slot.type | lower }}">
+                {{ course.name }} ({{ slot.type }})
+              </div>
+              {% endif %} {% endfor %}
+            </td>
+            {% endfor %}
           </tr>
           {% endfor %}
         </tbody>

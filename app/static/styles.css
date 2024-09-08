@@ -66,3 +66,27 @@ body {
         border-bottom: 2px solid #000;
     }
 }
+.btn {
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    color: white;
+}
+
+.btn.red {
+    background-color: #e74c3c;
+}
+
+.btn.red:hover {
+    background-color: #c0392b;
+}
+
+.btn.green {
+    background-color: #2ecc71;
+}
+
+.btn.green:hover {
+    background-color: #27ae60;
+}
+

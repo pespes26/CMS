@@ -145,12 +145,12 @@
   <body>
     <nav>
       <a href="{{ url_for('courses') }}">Course List</a>
-      <a href="{{ url_for('timetable') }}">Courses Table</a>
+      <a href="{{ url_for('timetable') }}">Timetable</a>
       <a href="{{ url_for('add_course') }}">Add Course</a>
-      <a href="{{ url_for('edit_course') }}">Edit Courses</a>
       <a href="{{ url_for('genetable') }}">Generate New Table</a>
       <a href="{{ url_for('index') }}">Home Page</a>
     </nav>
+
     <div class="content-wrapper">
       <div class="form-container">
         <h1>Edit Preferences</h1>
@@ -160,23 +160,6 @@
           <select name="schedule_pref" id="schedule_pref" required>
             <option value="long_days">Long day - fewer days</option>
             <option value="short_days">Short school days - more days</option>
-          </select>
-
-          <h2>Priority Courses (Optional)</h2>
-          <label for="priority_course_1">Priority Course 1:</label>
-          <select name="priority_course_1" id="priority_course_1">
-            <option value="" selected disabled>Select a course...</option>
-            {% for course in courses %}
-            <option value="{{ course.id }}">{{ course.name }}</option>
-            {% endfor %}
-          </select>
-
-          <label for="priority_course_2">Priority Course 2:</label>
-          <select name="priority_course_2" id="priority_course_2">
-            <option value="" selected disabled>Select a course...</option>
-            {% for course in courses %}
-            <option value="{{ course.id }}">{{ course.name }}</option>
-            {% endfor %}
           </select>
 
           <h2>Time Lapse Restrictions</h2>

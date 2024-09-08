@@ -80,22 +80,21 @@
   </head>
   <body>
     <nav>
-      <a href="{{ url_for('courses') }}">Courses List</a>
-      <a href="{{ url_for('timetable') }}">Time Table</a>
+      <a href="{{ url_for('courses') }}">Course List</a>
+      <a href="{{ url_for('timetable') }}">Timetable</a>
       <a href="{{ url_for('add_course') }}">Add Course</a>
-      <a href="{{ url_for('edit_course') }}">Edit Courses</a>
       <a href="{{ url_for('edit_pre') }}">Edit Preferences</a>
       <a href="{{ url_for('genetable') }}">Generate New Table</a>
     </nav>
+
     <div class="content-wrapper">
       <h1>Welcome to the Course Management System</h1>
       <div class="intro">
         <p>
-          This Course Management System is designed to help students and
-          administrators efficiently manage university courses, schedules, and
-          preferences. Whether you're adding a new course, editing existing
-          ones, or generating a personalized timetable, this system has got you
-          covered.
+          The Course Management System helps you manage your university schedule
+          efficiently. You can add new courses, manage lectures and practices,
+          edit your scheduling preferences, and automatically generate optimal
+          timetables based on your choices.
         </p>
       </div>
 
@@ -103,24 +102,25 @@
         <h2>Key Features</h2>
         <ul>
           <li>
-            <strong>Courses List:</strong> View all available courses in a
-            structured format.
+            <strong>Course Management:</strong> Add and edit courses, lectures,
+            and practices. You can input details such as time slots, buildings,
+            and classrooms.
           </li>
           <li>
-            <strong>Time Table:</strong> Access your current timetable with all
-            scheduled classes.
+            <strong>Timetable Generation:</strong> Create a personalized
+            timetable by choosing between long days with fewer hours or shorter
+            school days with more hours. The system will automatically optimize
+            your schedule based on your preferences.
           </li>
           <li>
-            <strong>Add/Edit Courses:</strong> Easily add new courses or modify
-            details of existing ones.
+            <strong>Edit Preferences:</strong> Set preferences for scheduling,
+            including selecting preferred days for classes and restricted time
+            slots where you don’t want any classes.
           </li>
           <li>
-            <strong>Edit Preferences:</strong> Set your preferences for course
-            scheduling, such as preferred days and times.
-          </li>
-          <li>
-            <strong>Generate New Table:</strong> Create a new timetable based on
-            your preferences and course availability.
+            <strong>Conflict-Free Scheduling:</strong> The system ensures there
+            are no overlapping classes when generating timetables, adjusting
+            based on your preferences.
           </li>
         </ul>
       </div>
@@ -128,33 +128,56 @@
       <div class="section">
         <h2>How to Use the System</h2>
         <p>
-          To make the most out of the Course Management System, follow these
-          simple steps:
+          Follow these steps to make the most out of the Course Management
+          System:
         </p>
         <ul>
           <li>
-            <strong>Step 1:</strong> Start by exploring the
-            <a href="{{ url_for('courses') }}">Courses List</a> to see all
-            available courses.
+            <strong>Step 1:</strong> Visit the
+            <a href="{{ url_for('courses') }}">Course List</a> to view all
+            available courses or the ones you've already entered.
           </li>
           <li>
-            <strong>Step 2:</strong> Add any new courses you wish to take using
-            the <a href="{{ url_for('add_course') }}">Add Course</a> feature.
+            <strong>Step 2:</strong> Use the
+            <a href="{{ url_for('add_course') }}">Add Course</a> feature to
+            input new courses, including lectures and practices with specific
+            time slots, buildings, and classrooms.
           </li>
           <li>
             <strong>Step 3:</strong> Go to
-            <a href="{{ url_for('edit_pre') }}">Edit Preferences</a> to set your
-            scheduling preferences, such as preferred days and restricted hours.
+            <a href="{{ url_for('edit_pre') }}">Edit Preferences</a> to define
+            your scheduling preferences. You can choose between long school days
+            (fewer days) or shorter days (more days). Additionally, set any
+            restricted times where you don’t want classes.
           </li>
           <li>
-            <strong>Step 4:</strong> Once your preferences are set, head over to
-            <a href="{{ url_for('genetable') }}">Generate New Table</a> to
-            create your personalized timetable.
+            <strong>Step 4:</strong> Once your preferences are set, use the
+            <a href="{{ url_for('genetable') }}">Generate New Table</a> feature.
+            The system will automatically build a timetable without overlapping
+            lectures or practices.
           </li>
           <li>
-            <strong>Step 5:</strong> Review your generated timetable and save
-            it. You can view the final version in the
-            <a href="{{ url_for('timetable') }}">Time Table</a> section.
+            <strong>Step 5:</strong> Review your timetable by heading to the
+            <a href="{{ url_for('timetable') }}">Timetable</a> section.
+          </li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Additional Features</h2>
+        <ul>
+          <li>
+            The system automatically adjusts schedules to prevent overlap
+            between lectures and practices, ensuring smooth planning.
+          </li>
+          <li>
+            You can enter restricted time slots for specific days, and the
+            system will ensure no classes are scheduled during those periods.
+          </li>
+          <li>
+            The timetable will display all the lectures and practices you’ve
+            added, including color-coded distinctions for lectures and
+            practices.
           </li>
         </ul>
       </div>
@@ -162,10 +185,10 @@
       <div class="section">
         <h2>Why Use This System?</h2>
         <p>
-          This system is designed to streamline your course management process,
-          allowing you to focus on what truly matters: your studies. With
-          features like automatic timetable generation and easy course editing,
-          you'll save time and reduce the stress of manual scheduling.
+          The Course Management System simplifies the course planning process,
+          automatically optimizing your schedule based on your preferences and
+          constraints. By avoiding manual scheduling conflicts, this system
+          helps you focus on studying and frees up your time for other tasks.
         </p>
       </div>
     </div>

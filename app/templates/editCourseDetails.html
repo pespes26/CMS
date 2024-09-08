@@ -20,7 +20,7 @@
         padding: 20px;
         background-color: #f8f8f8;
         box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        height: 100vh; /* Full height */
+        height: 100vh;
         box-sizing: border-box;
         position: fixed;
         left: 0;
@@ -40,9 +40,9 @@
         padding-left: 10px;
       }
       .content-wrapper {
-        margin-left: 220px; /* Adjust this based on the nav width */
+        margin-left: 220px;
         padding: 20px;
-        width: calc(100% - 240px); /* Ensure the content stays within bounds */
+        width: calc(100% - 240px);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -96,142 +96,138 @@
     </nav>
     <div class="content-wrapper">
       <div class="content">
-        <h1>Edit Course Details</h1>
-        <h2>{{ course.name }} (Course Number : {{ course.courseid }})</h2>
+        <h1>Edit Course Details for {{ course.name }}</h1>
 
-        <form
-          method="POST"
-          action="{{ url_for('edit_course_details', course_id=course.id) }}"
-        >
-          <label for="edit_choice">What would you like to edit?</label>
-          <select name="edit_choice" id="edit_choice" required>
-            <option value="select" disabled selected>Select...</option>
-            <option value="lecture">Lectures</option>
-            <option value="practice">Practices</option>
+        <!-- Edit Lecture Form -->
+        <form method="POST" name="lecture_form">
+          <h2>Edit Lecture</h2>
+        
+          <select name="lecture_id">
+            {% for lecture in lectures %}
+            <option value="{{ lecture.id }}">
+              {{ lecture.day }}: {{ lecture.start_time }} - {{ lecture.end_time }}
+            </option>
+            {% endfor %}
           </select>
-
-          <div id="lecture_fields" style="display: none">
-            <h3>Edit Lecture</h3>
-            <label for="lecture_id">Select Lecture:</label>
-            <select name="lecture_id" required>
-              {% for lecture in course.lecture_times %}
-              <option value="{{ lecture.id }}">
-                {{ lecture.day }}: {{ lecture.start_time }} - {{
-                lecture.end_time }}
-              </option>
-              {% endfor %}
-            </select>
+        
+          <!-- Display the selected lecture fields -->
+          {% if lectures %}
+            {% set selected_lecture = lectures[0] %}
             <label for="day">Day:</label>
-            <select name="day">
-              <option value="Sunday">Sunday</option>
-              <option value="Monday">Monday</option>
-              <option value="Tuesday">Tuesday</option>
-              <option value="Wednesday">Wednesday</option>
-              <option value="Thursday">Thursday</option>
-              <option value="Friday">Friday</option>
+            <select name="day" required>
+              <option value="Sunday" {% if selected_lecture.day == 'Sunday' %}selected{% endif %}>Sunday</option>
+              <option value="Monday" {% if selected_lecture.day == 'Monday' %}selected{% endif %}>Monday</option>
+              <option value="Tuesday" {% if selected_lecture.day == 'Tuesday' %}selected{% endif %}>Tuesday</option>
+              <option value="Wednesday" {% if selected_lecture.day == 'Wednesday' %}selected{% endif %}>Wednesday</option>
+              <option value="Thursday" {% if selected_lecture.day == 'Thursday' %}selected{% endif %}>Thursday</option>
+              <option value="Friday" {% if selected_lecture.day == 'Friday' %}selected{% endif %}>Friday</option>
             </select>
+        
             <label for="start_time">Start Time:</label>
-            <input type="text" name="start_time" placeholder="HH" disabled />
+            <input type="time" name="start_time" value="{{ selected_lecture.start_time }}" />
+        
             <label for="end_time">End Time:</label>
-            <input type="text" name="end_time" placeholder="HH" disabled />
+            <input type="time" name="end_time" value="{{ selected_lecture.end_time }}" />
+        
             <label for="building">Building:</label>
-            <input type="text" name="building" placeholder="0-97" disabled />
+            <input type="text" name="building" value="{{ selected_lecture.building }}" />
+        
             <label for="classroom">Classroom:</label>
-            <input type="text" name="classroom" placeholder="1-350" disabled />
-          </div>
-
-          <div id="practice_fields" style="display: none">
-            <h3>Edit Practice</h3>
-            <label for="practice_id">Select Practice:</label>
-            <select name="practice_id" required>
-              {% for practice in course.practice_times %}
-              <option value="{{ practice.id }}">
-                {{ practice.day }}: {{ practice.start_time }} - {{
-                practice.end_time }}
-              </option>
-              {% endfor %}
-            </select>
-            <label for="day">Day:</label>
-            <select name="day">
-              <option value="Sunday">Sunday</option>
-              <option value="Monday">Monday</option>
-              <option value="Tuesday">Tuesday</option>
-              <option value="Wednesday">Wednesday</option>
-              <option value="Thursday">Thursday</option>
-              <option value="Friday">Friday</option>
-            </select>
-            <label for="start_time">Start Time:</label>
-            <input type="text" name="start_time" placeholder="HH" disabled />
-            <label for="end_time">End Time:</label>
-            <input type="text" name="end_time" placeholder="HH" disabled />
-            <label for="building">Building:</label>
-            <input type="text" name="building" placeholder="0-97" disabled />
-            <label for="classroom">Classroom:</label>
-            <input type="text" name="classroom" placeholder="0-350" disabled />
-          </div>
-
-          <button type="submit">Save Changes</button>
+            <input type="text" name="classroom" value="{{ selected_lecture.classroom }}" />
+          {% endif %}
+        
+          <input type="hidden" name="edit_choice" value="lecture" />
+          <button type="submit" class="btn btn-success">Update Lecture</button>
         </form>
+        
 
-        <form
-          method="POST"
-          action="{{ url_for('delete_course', course_id=course.id) }}"
-        >
-          <button type="submit" class="delete-btn">Delete Course</button>
-        </form>
+        <hr />
+
+        <!-- Edit Practice Form -->
+<!-- Edit Practice Form -->
+<form method="POST" name="practice_form">
+  <h2>Edit Practice</h2>
+
+  <!-- Dropdown to select a practice -->
+  <select name="practice_id">
+    {% for practice in practices %}
+    <option value="{{ practice.id }}">
+      {{ practice.day }}: {{ practice.start_time }} - {{ practice.end_time }}
+    </option>
+    {% endfor %}
+  </select>
+
+  <!-- Display the selected practice fields -->
+  {% if practices %}
+    {% set selected_practice = practices[0] %}
+    <label for="day">Day:</label>
+    <select name="day" required>
+      <option value="Sunday" {% if selected_practice.day == 'Sunday' %}selected{% endif %}>Sunday</option>
+      <option value="Monday" {% if selected_practice.day == 'Monday' %}selected{% endif %}>Monday</option>
+      <option value="Tuesday" {% if selected_practice.day == 'Tuesday' %}selected{% endif %}>Tuesday</option>
+      <option value="Wednesday" {% if selected_practice.day == 'Wednesday' %}selected{% endif %}>Wednesday</option>
+      <option value="Thursday" {% if selected_practice.day == 'Thursday' %}selected{% endif %}>Thursday</option>
+      <option value="Friday" {% if selected_practice.day == 'Friday' %}selected{% endif %}>Friday</option>
+    </select>
+
+    <label for="start_time">Start Time:</label>
+    <input type="time" name="start_time" value="{{ selected_practice.start_time }}" />
+
+    <label for="end_time">End Time:</label>
+    <input type="time" name="end_time" value="{{ selected_practice.end_time }}" />
+
+    <label for="building">Building:</label>
+    <input type="text" name="building" value="{{ selected_practice.building }}" />
+
+    <label for="classroom">Classroom:</label>
+    <input type="text" name="classroom" value="{{ selected_practice.classroom }}" />
+  {% endif %}
+
+  <input type="hidden" name="edit_choice" value="practice" />
+  <button type="submit" class="btn btn-primary">Update Practice</button>
+</form>
+
       </div>
     </div>
 
     <script>
-      document;
-      document
-        .getElementById("edit_choice")
-        .addEventListener("change", function () {
-          var choice = this.value;
+      document.addEventListener("DOMContentLoaded", function () {
+        const editChoice = document.querySelector("input[name='edit_choice']");
+        const lectureFields = document.querySelector("form[name='lecture_form']");
+        const practiceFields = document.querySelector("form[name='practice_form']");
 
-          // Hide and disable fields
-          var lectureFields = document.getElementById("lecture_fields");
-          var practiceFields = document.getElementById("practice_fields");
+        if (editChoice) {
+          editChoice.addEventListener("change", function () {
+            if (editChoice.value === "lecture") {
+              lectureFields.style.display = "block";
+              practiceFields.style.display = "none";
+              enableFields(lectureFields);
+              disableFields(practiceFields);
+            } else if (editChoice.value === "practice") {
+              lectureFields.style.display = "none";
+              practiceFields.style.display = "block";
+              enableFields(practiceFields);
+              disableFields(lectureFields);
+            }
+          });
+        }
 
-          if (choice === "lecture") {
-            lectureFields.style.display = "block";
-            practiceFields.style.display = "none";
+        function disableFields(fieldset) {
+          const inputs = fieldset.querySelectorAll("input, select");
+          inputs.forEach((input) => {
+            input.required = false;
+            input.disabled = true;
+          });
+        }
 
-            // Enable lecture fields
-            enableFields(lectureFields);
-            disableFields(practiceFields);
-          } else if (choice === "practice") {
-            practiceFields.style.display = "block";
-            lectureFields.style.display = "none";
-
-            // Enable practice fields
-            enableFields(practiceFields);
-            disableFields(lectureFields);
-          } else {
-            lectureFields.style.display = "none";
-            practiceFields.style.display = "none";
-
-            // Disable all fields
-            disableFields(lectureFields);
-            disableFields(practiceFields);
-          }
-        });
-
-      function disableFields(fieldset) {
-        const inputs = fieldset.querySelectorAll("input, select");
-        inputs.forEach((input) => {
-          input.required = false;
-          input.disabled = true;
-        });
-      }
-
-      function enableFields(fieldset) {
-        const inputs = fieldset.querySelectorAll("input, select");
-        inputs.forEach((input) => {
-          input.required = true;
-          input.disabled = false;
-        });
-      }
+        function enableFields(fieldset) {
+          const inputs = fieldset.querySelectorAll("input, select");
+          inputs.forEach((input) => {
+            input.required = true;
+            input.disabled = false;
+          });
+        }
+      });
     </script>
   </body>
 </html>

@@ -11,21 +11,22 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-        display: flex;
         margin: 0;
         padding: 0;
       }
+
       nav {
         width: 200px;
         padding: 20px;
         background-color: #f8f8f8;
         box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        height: 100vh; /* Full height */
+        height: 100vh;
         box-sizing: border-box;
         position: fixed;
         left: 0;
         top: 0;
       }
+
       nav a {
         display: block;
         padding: 10px 0;
@@ -34,77 +35,148 @@
         font-size: 16px;
         margin-bottom: 10px;
       }
+
       nav a:hover {
         background-color: #e0e0e0;
         border-left: 5px solid #73a4dd;
         padding-left: 10px;
       }
-      .content {
-        margin-left: 220px; /* Adjust this based on the nav width */
+
+      .content-wrapper {
+        margin-left: 220px;
         padding: 20px;
-        width: calc(100% - 240px); /* Ensure the content stays within bounds */
+        width: calc(100% - 240px);
       }
-      h1 {
-        margin-top: 0;
-      }
+
       table {
         width: 100%;
         border-collapse: collapse;
-        margin: 20px 0;
+        margin-top: 20px;
+        table-layout: fixed; /* Ensures the columns take up equal space */
       }
+
       th,
       td {
         border: 1px solid #ddd;
         padding: 10px;
         text-align: center;
       }
+
       th {
         background-color: #73a4dd;
         color: white;
-        font-weight: bold;
       }
+
       td {
         background-color: #fff;
+        min-height: 50px;
+      }
+
+      .time-col {
+        width: 10%;
+        background-color: #f0f0f0;
+      }
+
+      .day-col {
+        width: 18%;
+      }
+
+      button {
+        padding: 8px 12px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .edit-btn button {
+        background-color: #28a745;
+        color: white;
+      }
+
+      .edit-btn button:hover {
+        background-color: #218838;
+      }
+
+      .delete-btn button {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .delete-btn button:hover {
+        background-color: #c82333;
+      }
+
+      form {
+        display: inline;
       }
     </style>
   </head>
   <body>
     <nav>
-      <a href="{{ url_for('timetable') }}">Course Table</a>
+      <a href="{{ url_for('timetable') }}">Timetable</a>
       <a href="{{ url_for('add_course') }}">Add Course</a>
-      <a href="{{ url_for('edit_course') }}">Edit Course</a>
       <a href="{{ url_for('edit_pre') }}">Edit Preferences</a>
       <a href="{{ url_for('genetable') }}">Generate New Table</a>
       <a href="{{ url_for('index') }}">Home Page</a>
     </nav>
 
-    <div class="content">
+    <div class="content-wrapper">
       <h1>Course List</h1>
       <table>
         <thead>
           <tr>
-            <th>Course ID</th>
+            <th>Course Number</th>
             <th>Course Name</th>
             <th>Lectures</th>
             <th>Practices</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for course in courses %}
           <tr>
-            <td>{{ course.courseid }}</td>
+            <td>{{ course.coursenumber }}</td>
             <td>{{ course.name }}</td>
             <td>
-              {% for lecture in course.lectures %} {{ lecture.day }}: {{
-              lecture.start_time }} - {{ lecture.end_time }}<br />
-              Building {{ lecture.building }}, Room {{ lecture.classroom }}<br />
+              {% for lecture in course.lectures %}
+              <p>
+                {{ lecture.day }}: {{ lecture.start_time }} - {{
+                lecture.end_time }} (Building: {{ "Online" if lecture.building
+                == "0" else lecture.building }}, Room: {{ "Online" if
+                lecture.classroom == "0" else lecture.classroom }})
+              </p>
+              {% else %}
+              <p>No Lectures</p>
               {% endfor %}
             </td>
             <td>
-              {% for practice in course.practices %} {{ practice.day }}: {{
-              practice.start_time }} - {{ practice.end_time }}<br />
-              Building {{ practice.building }}, Room {{ practice.classroom }}<br />
+              {% for practice in course.practices %}
+              <p>
+                {{ practice.day }}: {{ practice.start_time }} - {{
+                practice.end_time }} (Building: {{ "Online" if practice.building
+                == "0" else practice.building }}, Room: {{ "Online" if
+                practice.classroom == "0" else practice.classroom }})
+              </p>
+              {% else %}
+              <p>No Practices</p>
               {% endfor %}
+            </td>
+            <td>
+              <!-- Edit button -->
+              <a
+                href="{{ url_for('edit_course_details', course_id=course.id) }}"
+                class="edit-btn"
+              >
+                <button>Edit</button>
+              </a>
+              <!-- Delete button -->
+              <form
+                action="{{ url_for('delete_course', course_id=course.id) }}"
+                method="POST"
+                class="delete-btn"
+              >
+                <button type="submit">Delete</button>
+              </form>
             </td>
           </tr>
           {% endfor %}

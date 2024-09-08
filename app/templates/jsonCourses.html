@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Courses JSON</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <div class="content-wrapper">
+      <h1>Upload Courses JSON</h1>
+
+      <!-- Form to upload JSON file -->
+      <form
+        id="uploadForm"
+        action="{{ url_for('upload_courses') }}"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <label for="jsonFile">Choose JSON File:</label>
+        <input
+          type="file"
+          id="jsonFile"
+          name="jsonFile"
+          accept=".json"
+          required
+        /><br /><br />
+
+        <input type="submit" value="Upload Courses" class="upload-btn" />
+      </form>
+
+      <!-- Display feedback message -->
+      <div id="message"></div>
+    </div>
+
+    <script>
+      // Optional: Use this script to display a message after uploading the file.
+      const form = document.getElementById("uploadForm");
+      form.addEventListener("submit", function (e) {
+        document.getElementById("message").innerText = "Uploading...";
+      });
+    </script>
+  </body>
+</html>

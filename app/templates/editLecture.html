@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Lecture</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Edit Lecture for {{ course.name }}</h1>
+    <form method="POST">
+      <label for="lecture_id">Select Lecture:</label>
+      <select name="lecture_id">
+        {% for lecture in course.lectures %}
+        <option value="{{ lecture.id }}">
+          {{ lecture.day }} ({{ lecture.start_time }} - {{ lecture.end_time }})
+        </option>
+        {% endfor %}
+      </select>
+
+      <!-- Form fields for editing the lecture -->
+      <input type="submit" value="Save" />
+    </form>
+  </body>
+</html>
