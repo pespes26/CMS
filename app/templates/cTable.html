@@ -72,28 +72,28 @@
         min-height: 50px;
       }
 
-      .time-col {
-        width: 10%;
-        background-color: #f0f0f0;
-      }
-
-      .day-col {
-        width: 18%;
-      }
-
-      /* Colors for lectures and practices */
       .lecture {
-        background-color: #ffcccb; /* Light red for lectures */
+        background-color: #99f0ff;
         color: black;
         border-radius: 5px;
         padding: 5px;
       }
 
       .practice {
-        background-color: #ccffcc; /* Light green for practices */
+        background-color: #99ff99;
         color: black;
         border-radius: 5px;
         padding: 5px;
+      }
+
+      .restricted-time {
+        background-color: #ffcccb; /* Light red color to make it stand out */
+        color: #000; /* Black text for readability */
+        border-radius: 5px; /* Rounded corners */
+        padding: 5px; /* Some padding for better spacing */
+        text-align: center; /* Center the text within the cell */
+        font-weight: bold; /* Make the text bold */
+        border: 1px solid #e0e0e0; /* Optional: A light border to distinguish the block */
       }
     </style>
   </head>
@@ -127,12 +127,17 @@
             {% for day in ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
             'Thursday', 'Friday'] %}
             <td>
-              {% for course, slot in schedule %} {% if slot.day == day and
-              slot.start_time.hour <= hour < slot.end_time.hour %}
-              <div class="{{ slot.type | lower }}">
-                {{ course.name }} ({{ slot.type }})
+              {% if schedule[day][hour] %} {% if 'course_name' in
+              schedule[day][hour] and 'type' in schedule[day][hour] %}
+              <!-- Display course info -->
+              <div class="{{ schedule[day][hour]['type'] | lower }}">
+                {{ schedule[day][hour]['course_name'] }} ({{
+                schedule[day][hour]['type'] }})
               </div>
-              {% endif %} {% endfor %}
+              {% elif schedule[day][hour] == 'Unavailable' %}
+              <!-- Display time restriction -->
+              <div class="restricted-time">Time Restrictions</div>
+              {% endif %} {% endif %}
             </td>
             {% endfor %}
           </tr>
@@ -140,5 +145,16 @@
         </tbody>
       </table>
     </div>
+    <!-- Display Errors if there are any -->
+    {% if errors %}
+    <div style="color: rgb(136, 18, 18); font-weight: bold">
+      <h2>Scheduling Issues:</h2>
+      <ul>
+        {% for error in errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
   </body>
 </html>
