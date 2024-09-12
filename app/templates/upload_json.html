@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload JSON File</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+      }
+
+      nav {
+        width: 200px;
+        padding: 20px;
+        background-color: #f8f8f8;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        height: 100vh;
+        box-sizing: border-box;
+        position: fixed;
+        left: 0;
+        top: 0;
+      }
+      nav a {
+        display: block;
+        padding: 10px 0;
+        color: black;
+        text-decoration: none;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      nav a:hover {
+        background-color: #e0e0e0;
+        border-left: 5px solid #73a4dd;
+        padding-left: 10px;
+      }
+
+      .upload-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        margin-top: 100px; /* For spacing below the fixed navbar */
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      .file-upload {
+        margin: 20px 0;
+        text-align: center;
+      }
+
+      input[type="file"] {
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      button {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #218838;
+      }
+
+      .message {
+        text-align: center;
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="{{ url_for('courses') }}">Course List</a>
+      <a href="{{ url_for('timetable') }}">Timetable</a>
+      <a href="{{ url_for('add_course') }}">Add Course</a>
+      <a href="{{ url_for('upload_json') }}">Upload JSON</a>
+      <a href="{{ url_for('index') }}">Home Page</a>
+    </nav>
+    <div class="upload-container">
+      <h1>Upload JSON File</h1>
+      {% if message %}
+      <p class="message">{{ message }}</p>
+      {% endif %}
+      <!-- upload_json.html -->
+      <form
+        method="POST"
+        enctype="multipart/form-data"
+        action="{{ url_for('upload_json') }}"
+      >
+        <div>
+          <label for="json_file">Upload JSON File:</label>
+          <input type="file" name="json_file" id="json_file" accept=".json" />
+        </div>
+        <div>
+          <button type="submit">Upload</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

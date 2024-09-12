@@ -1,0 +1,26 @@
+{
+  "courses": [
+    {
+      "name": "Software Engineering",
+      "coursenumber": "12345",
+      "lectures": [
+        {
+          "day": "Monday",
+          "start_time": "10:00",
+          "end_time": "12:00",
+          "building": "0",
+          "classroom": "0"
+        }
+      ],
+      "practices": [
+        {
+          "day": "Wednesday",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "building": "15",
+          "classroom": " 202"
+        }
+      ]
+    }
+  ]
+}

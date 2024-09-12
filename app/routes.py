@@ -3,6 +3,9 @@ from app import app, db
 from app.models import Course, LectureTime, PracticeTime
 from sqlalchemy.exc import SQLAlchemyError
 from datetime import time,datetime
+import json
+from werkzeug.utils import secure_filename
+import os
 
 
 @app.route('/add_course', methods=['GET', 'POST'])
@@ -413,3 +416,92 @@ def genetable():
         return render_template('geneTable.html', schedule=optimal_schedule)
 
     return render_template('geneTable.html')
+
+def save_data_to_db(data):
+    for course in data.get('courses', []):
+        new_course = Course(
+            name=course['name'],
+            coursenumber=course['coursenumber'],
+            lectures=course.get('lectures', []),
+            practices=course.get('practices', [])
+        )
+        db.session.add(new_course)
+    db.session.commit()
+
+UPLOAD_FOLDER = 'uploads'  # Folder to store uploaded files
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Create folder if it doesn't exist
+
+@app.route('/upload_json', methods=['GET', 'POST'])
+def upload_json():
+    if request.method == 'POST':
+        if 'json_file' not in request.files:
+            return "No file part", 400
+
+        file = request.files['json_file']
+
+        if file.filename == '':
+            return "No selected file", 400
+
+        if file and file.filename.endswith('.json'):
+            try:
+                # Save the file in the "uploads" directory
+                filename = secure_filename(file.filename)
+                file_path = os.path.join('uploads', filename)
+                
+                # Ensure the uploads directory exists
+                if not os.path.exists('uploads'):
+                    os.makedirs('uploads')
+
+                file.save(file_path)
+
+                # Load the JSON data from the file
+                with open(file_path, 'r') as f:
+                    data = json.load(f)
+
+                # Process the JSON data and save it to the database
+                for course_data in data['courses']:
+                    new_course = Course(
+                        name=course_data['name'],
+                        coursenumber=course_data['coursenumber']
+                    )
+                    db.session.add(new_course)
+                    db.session.flush()  # Get the course ID for foreign keys
+
+                    # Add lectures
+                    for lecture_data in course_data.get('lectures', []):
+                        lecture = LectureTime(
+                            day=lecture_data['day'],
+                            start_time=lecture_data['start_time'],
+                            end_time=lecture_data['end_time'],
+                            building=lecture_data['building'],
+                            classroom=lecture_data['classroom'],
+                            course_id=new_course.id
+                        )
+                        db.session.add(lecture)
+
+                    # Add practices
+                    for practice_data in course_data.get('practices', []):
+                        practice = PracticeTime(
+                            day=practice_data['day'],
+                            start_time=practice_data['start_time'],
+                            end_time=practice_data['end_time'],
+                            building=practice_data['building'],
+                            classroom=practice_data['classroom'],
+                            course_id=new_course.id
+                        )
+                        db.session.add(practice)
+
+                # Commit the changes to the database
+                db.session.commit()
+
+                flash('Data saved successfully!', 'success')
+                return redirect(url_for('courses'))
+
+            except json.JSONDecodeError as e:
+                return f'Error decoding JSON: {str(e)}', 400
+            except Exception as e:
+                return f'Error saving data: {str(e)}', 500
+
+        return "Invalid file format. Please upload a JSON file.", 400
+
+    return render_template('upload_json.html')
