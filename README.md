@@ -13,13 +13,14 @@
 ---
 
 ## Project Description
-This is a Course Management System with a file upload feature that allows users to upload JSON files and manage courses. The system includes a fixed sidebar for navigation, a responsive upload form, and error messages to ensure a smooth user experience.
+This is a Course Management System that allows users to upload JSON files for course management, built with Flask and using PostgreSQL as the database. The project includes a fixed sidebar navigation, a responsive form for file uploads, and backend support for database operations.
 
 ## Features
 - Upload JSON files to manage courses.
-- Sidebar navigation for quick access to different sections.
-- Responsive design with modern UI.
-- Error handling for file upload validation.
+- Store course data in a PostgreSQL database.
+- Sidebar navigation for easy access to different sections.
+- Responsive design and modern UI.
+- Database migration with Flask-Migrate.
 
 ## Technologies and Libraries
 
@@ -29,25 +30,51 @@ This is a Course Management System with a file upload feature that allows users 
 - **JavaScript**: For client-side interactions (if used).
 - **Font**: Poppins for modern typography.
 
-### Backend (Optional if applicable):
-- **Flask**: Python micro web framework for serving the web application.
-- **Werkzeug**: For handling file uploads in Flask.
-- **Jinja2**: Templating engine used with Flask for dynamic HTML generation.
+### Backend:
+- **Flask 2.0.1**: Python micro web framework for serving the web application.
+- **Flask-SQLAlchemy 2.5.1**: For interacting with the PostgreSQL database.
+- **Flask-Migrate 3.1.0**: For handling database migrations.
+- **Werkzeug 2.0.1**: For handling various WSGI operations.
+- **psycopg2-binary 2.9.1**: PostgreSQL database adapter for Python.
 
-### Libraries/Packages (Optional depending on the implementation):
-- **Bootstrap 5** (Optional): To enhance responsiveness and UI components.
-- **jQuery** (Optional): For handling form events (if used).
-- **Flask**: If you’re using a Flask backend.
-- **Python 3.7+**: Required for running the Flask app.
+### Database:
+- **PostgreSQL**: The relational database used to store course information.
 
 ## Installation (Windows)
 
 ### Prerequisites:
 - **Python 3.7 or above** installed on your machine. You can download it from the [official Python website](https://www.python.org/downloads/).
+- **PostgreSQL** installed and set up. Download it from [here](https://www.postgresql.org/download/).
 - **pip** installed for package management (usually installed with Python).
 
 ### Clone the Repository:
 ```bash
-[git clone https://github.com/pespes26/CMS]
+git clone https://github.com/pespes26/CMS
 cd course-management-system
- 
+```
+## Create a Virtual Environment (Windows):
+1. Open the Command Prompt or PowerShell.
+2. Navigate to the project directory.
+3. Run the following command to create a virtual environment:
+```bash
+python -m venv venv
+```
+4. Activate the virtual environment:
+```bash
+venv\Scripts\activate
+```
+### Install Required Packages:
+```bash
+pip install -r requirements.txt
+```
+## Required Packages:
+These packages are listed in the requirements.txt file and will be installed automatically:
+```bash
+Flask==2.0.1
+Flask-SQLAlchemy==2.5.1
+Flask-Migrate==3.1.0
+psycopg2-binary==2.9.1
+Werkzeug==2.0.1
+SQLAlchemy==1.3.23
+```
+
