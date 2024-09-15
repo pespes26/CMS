@@ -48,6 +48,6 @@ This is a Course Management System with a file upload feature that allows users 
 
 ### Clone the Repository:
 ```bash
-git clone https://github.com/your-username/course-management-system.git
+[git clone https://github.com/pespes26/CMS]
 cd course-management-system
  
