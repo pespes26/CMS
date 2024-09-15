@@ -78,13 +78,3 @@ Werkzeug==2.0.1
 SQLAlchemy==1.3.23
 ```
 
-### Project Tasks
-
-- [x] Setup virtual environment
-- [x] Install required packages
-- [ ] Configure PostgreSQL database
-- [ ] Implement file upload feature
-- [ ] Add course management functionality
-- [ ] Write unit tests
-- [ ] Deploy to production
-
