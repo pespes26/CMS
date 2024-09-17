@@ -119,24 +119,28 @@ flask run
 ```
 5. Open your browser and go to http://127.0.0.1:5000/ to view the project.
 
-### File Stuture:
+## File Structure
 
+```bash
+course-management-system/
 ├── app.py                   # Main Flask application file
-├── config.py                # Configuration file for database settings
-├── templates/               # HTML files for Flask
-│   └── index.html           # Main page template
-├── static/                  # Static files such as CSS, JavaScript, and images
-│   └── styles.css           # Main stylesheet
-├── migrations/              # Folder for database migrations
-├── upload/                  # Folder for uploaded files
-├── .env                     # Environment file to store secrets (not tracked in Git)
-├── README.md                # Project documentation
-└── requirements.txt         # List of required Python packages
+├── config.py                # Configuration file for environment settings
+├── templates/               # HTML templates for rendering views
+│   └── index.html           # Main page for the app
+├── static/                  # Static assets such as CSS, JavaScript, images
+│   ├── styles.css           # Main stylesheet
+│   └── script.js            # JavaScript file (if applicable)
+├── migrations/              # Database migration files
+├── upload/                  # Directory for uploaded course files
+├── .env                     # Environment variables (ignored by Git)
+├── requirements.txt         # List of required Python packages
+├── README.md                # Project documentation (this file)
+└── docker-compose.yml       # Docker configuration file for setting up the project
 
 
 
 
--
+
 
 
 
