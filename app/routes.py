@@ -243,7 +243,10 @@ def edit_pre():
     return render_template('editPer.html', courses=courses)
 
 def generate_optimal_schedule(courses, schedule_pref, restricted_times):
-    # Initialize timetable
+    """
+    Generate the optimal schedule based on course list, user preferences, and time restrictions.
+    """
+    # Initialize the timetable (08:00 to 22:00 each day)
     timetable = {
         'Sunday': {hour: None for hour in range(8, 22)},
         'Monday': {hour: None for hour in range(8, 22)},
@@ -253,31 +256,34 @@ def generate_optimal_schedule(courses, schedule_pref, restricted_times):
         'Friday': {hour: None for hour in range(8, 22)},
     }
 
-    scheduling_errors = []
+    scheduling_errors = []  # Track errors related to course scheduling
 
     def check_for_conflicts(day, start_time, end_time):
+        """Check for any scheduling conflicts in the given time range."""
         for hour in range(start_time, end_time):
             if timetable[day][hour] is not None:
-                return timetable[day][hour]  # Could return a dict or a string ('Unavailable')
+                return timetable[day][hour]  # Could return a string 'Unavailable' or course details
         return None
 
-    # Apply restricted times to the timetable
     def apply_restricted_times():
+        """Apply restricted times to the timetable based on user preferences."""
         for restriction in restricted_times:
             day = restriction['day']
             start_time = datetime.strptime(restriction['start_time'], '%H:%M').hour
             end_time = datetime.strptime(restriction['end_time'], '%H:%M').hour
             for hour in range(start_time, end_time):
                 timetable[day][hour] = 'Unavailable'
+            print(f"Applied time restriction on {day} from {start_time}:00 to {end_time}:00")
 
     # Apply time restrictions
     apply_restricted_times()
 
-    # Place courses in the timetable
+    # Scheduling courses: handle lectures and practices
     for course in courses:
         lecture_scheduled = False
         practice_scheduled = False
-        lecture_conflict_reasons = []  # To track all conflict reasons
+        lecture_conflict_reasons = []
+        practice_conflict_reasons = []
 
         # Try to schedule lectures
         for lecture in course.lectures:
@@ -285,107 +291,90 @@ def generate_optimal_schedule(courses, schedule_pref, restricted_times):
             start_time = lecture.start_time.hour
             end_time = lecture.end_time.hour
 
+            print(f"Attempting to schedule {course.name} lecture on {day} from {start_time}:00 to {end_time}:00")
+
             # Check for conflicts
             conflicting_course = check_for_conflicts(day, start_time, end_time)
             if conflicting_course is None:
                 # Schedule the lecture
                 for hour in range(start_time, end_time):
-                    timetable[day][hour] = {
-                        'course_name': course.name,
-                        'type': 'Lecture'
-                    }
+                    timetable[day][hour] = {'course_name': course.name, 'type': 'Lecture'}
+                print(f"Scheduled {course.name} lecture on {day} from {start_time}:00 to {end_time}:00")
                 lecture_scheduled = True
-                break  # Exit loop once lecture is scheduled
+                break
             else:
-                if conflicting_course == 'Unavailable':
-                    lecture_conflict_reasons.append(f"time restrictions on {day} from {start_time}:00 to {end_time}:00.")
-                else:
-                    lecture_conflict_reasons.append(f"conflicts with {conflicting_course['course_name']} on {day} from {start_time}:00 to {end_time}:00.")
+                conflict_reason = f"conflicts with {conflicting_course['course_name']}" if conflicting_course != 'Unavailable' else "time restrictions"
+                lecture_conflict_reasons.append(f"{day} from {start_time}:00 to {end_time}:00 ({conflict_reason}).")
 
-        # If no valid slot found, log error
         if not lecture_scheduled:
-            if any("time restrictions" in reason for reason in lecture_conflict_reasons):
-                scheduling_errors.append(f"Lecture for {course.name} could not be scheduled due to time restrictions, should remove one of them.")
-            else:
-                scheduling_errors.append(f"Lecture for {course.name} could not be scheduled due to {', '.join(lecture_conflict_reasons)}.")
+            scheduling_errors.append(f"Lecture for {course.name} could not be scheduled due to {','.join(lecture_conflict_reasons)}.")
+            print(f"Error scheduling {course.name} lecture: {lecture_conflict_reasons}")
 
         # Try to schedule practices
-        practice_conflict_reasons = []  # To track all conflict reasons
         for practice in course.practices:
             day = practice.day
             start_time = practice.start_time.hour
             end_time = practice.end_time.hour
+
+            print(f"Attempting to schedule {course.name} practice on {day} from {start_time}:00 to {end_time}:00")
 
             # Check for conflicts
             conflicting_course = check_for_conflicts(day, start_time, end_time)
             if conflicting_course is None:
                 # Schedule the practice
                 for hour in range(start_time, end_time):
-                    timetable[day][hour] = {
-                        'course_name': course.name,
-                        'type': 'Practice'
-                    }
+                    timetable[day][hour] = {'course_name': course.name, 'type': 'Practice'}
+                print(f"Scheduled {course.name} practice on {day} from {start_time}:00 to {end_time}:00")
                 practice_scheduled = True
-                break  # Exit loop once practice is scheduled
+                break
             else:
-                if conflicting_course == 'Unavailable':
-                    practice_conflict_reasons.append(f"time restrictions on {day} from {start_time}:00 to {end_time}:00.")
-                else:
-                    practice_conflict_reasons.append(f"conflicts with {conflicting_course['course_name']} on {day} from {start_time}:00 to {end_time}:00.")
+                conflict_reason = f"conflicts with {conflicting_course['course_name']}" if conflicting_course != 'Unavailable' else "time restrictions"
+                practice_conflict_reasons.append(f"{day} from {start_time}:00 to {end_time}:00 ({conflict_reason}).")
 
-        # If no valid slot found, log error
         if not practice_scheduled:
-            if any("time restrictions" in reason for reason in practice_conflict_reasons):
-                scheduling_errors.append(f"Practice for {course.name} could not be scheduled due to time restrictions, should remove one of them.")
-            else:
-                scheduling_errors.append(f"Practice for {course.name} could not be scheduled due to {', '.join(practice_conflict_reasons)}.")
+            scheduling_errors.append(f"Practice for {course.name} could not be scheduled due to {', '.join(practice_conflict_reasons)}.")
+            print(f"Error scheduling {course.name} practice: {practice_conflict_reasons}")
 
     return timetable, scheduling_errors
+  
 
 def spread_courses_across_days(timetable, schedule):
-    """
-    Spread the courses across as many days as possible.
-    """
+    """Spread courses evenly across the week, avoiding conflicts."""
     for course, slot in schedule:
         day = slot['day']
         start_time = slot['start_time'].hour
         end_time = slot['end_time'].hour
-        # Try to distribute evenly across all days
+
         for target_day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']:
-            if day == target_day and is_time_available(timetable, target_day, start_time, end_time):
+            if is_time_available(timetable, target_day, start_time, end_time):
                 for hour in range(start_time, end_time):
                     timetable[target_day][hour] = f"{course.name} ({slot['type']})"
                 break
     return timetable
 
 
-
 def pack_courses_into_fewer_days(timetable, schedule):
-    """
-    Pack courses into fewer days but avoid entirely empty days.
-    """
-    packed_days = ['Thursday', 'Friday']  # Try to pack classes into the end of the week
-    other_days = ['Monday', 'Tuesday', 'Wednesday']  # Reserve these days for overflow if needed
+    """Pack courses into fewer days while avoiding entirely empty days."""
+    packed_days = ['Thursday', 'Friday']
+    other_days = ['Monday', 'Tuesday', 'Wednesday']
 
     for course, slot in schedule:
-        day = slot['day']
         start_time = slot['start_time'].hour
         end_time = slot['end_time'].hour
-        # Try to pack the courses into the packed days
+
         for target_day in packed_days:
             if is_time_available(timetable, target_day, start_time, end_time):
                 for hour in range(start_time, end_time):
                     timetable[target_day][hour] = f"{course.name} ({slot['type']})"
                 break
         else:
-            # If no space in packed days, place the class in the remaining days
             for target_day in other_days:
                 if is_time_available(timetable, target_day, start_time, end_time):
                     for hour in range(start_time, end_time):
                         timetable[target_day][hour] = f"{course.name} ({slot['type']})"
                     break
-    return timetable
 
+    return timetable
 
 
 # Route for generating the timetable

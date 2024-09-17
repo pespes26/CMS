@@ -9,17 +9,20 @@
       href="{{ url_for('static', filename='styles.css') }}"
     />
     <style>
+      /* Global Settings */
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Poppins", sans-serif; /* Modern and clean font */
         margin: 0;
         padding: 0;
+        background-color: #f5f5f5; /* Light grey background for a clean look */
       }
 
+      /* Sidebar Navigation */
       nav {
-        width: 200px;
-        padding: 20px;
-        background-color: #f8f8f8;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        width: 220px;
+        padding: 25px;
+        background-color: #ffffff;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05); /* Lighter shadow for elegance */
         height: 100vh;
         box-sizing: border-box;
         position: fixed;
@@ -29,71 +32,111 @@
 
       nav a {
         display: block;
-        padding: 10px 0;
-        color: black;
+        padding: 12px 0;
+        color: #2c3e50; /* Dark blue-grey for modern look */
         text-decoration: none;
-        font-size: 16px;
-        margin-bottom: 10px;
+        font-size: 17px; /* Slightly larger for better readability */
+        margin-bottom: 15px;
+        transition: all 0.3s ease; /* Smooth hover effect */
+        border-left: 4px solid transparent; /* Added for hover transition */
       }
 
       nav a:hover {
-        background-color: #e0e0e0;
-        border-left: 5px solid #73a4dd;
-        padding-left: 10px;
+        background-color: #e0eaf4; /* Softer hover effect */
+        border-left: 5px solid #3498db; /* More refined blue accent */
+        padding-left: 15px;
+        color: #2980b9; /* Color shift for hover */
       }
 
+      /* Content Wrapper */
       .content-wrapper {
-        margin-left: 220px;
-        padding: 20px;
-        width: calc(100% - 240px);
+        margin-left: 240px; /* Adjusted for sidebar width */
+        padding: 40px;
+        width: calc(100% - 260px);
+        background-color: #fff;
+        border-radius: 10px; /* Rounded corners for modern look */
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); /* Subtle shadow for elevation */
       }
 
+      /* Table Styles */
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
+        margin-top: 30px;
         table-layout: fixed;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Light shadow under table */
       }
 
       th,
       td {
         border: 1px solid #ddd;
-        padding: 10px;
+        padding: 15px;
         text-align: center;
+        font-size: 16px;
       }
 
       th {
-        background-color: #73a4dd;
+        background-color: #3498db; /* Modern blue for header */
         color: white;
+        font-weight: 600;
       }
 
       td {
-        background-color: #fff;
+        background-color: #ffffff;
         min-height: 50px;
       }
 
+      /* Lecture Styling */
       .lecture {
-        background-color: #99f0ff;
+        background-color: #99f0ff; /* Light blue background */
         color: black;
-        border-radius: 5px;
-        padding: 5px;
+        border-radius: 8px;
+        padding: 10px;
+        font-weight: bold; /* Bold text */
       }
 
+      /* Practice Styling */
       .practice {
-        background-color: #99ff99;
+        background-color: #99ff99; /* Light green background */
         color: black;
-        border-radius: 5px;
-        padding: 5px;
+        border-radius: 8px;
+        padding: 10px;
+        font-weight: bold; /* Bold text */
       }
 
+      /* Restricted Time Block */
       .restricted-time {
-        background-color: #ffcccb; /* Light red color to make it stand out */
-        color: #000; /* Black text for readability */
-        border-radius: 5px; /* Rounded corners */
-        padding: 5px; /* Some padding for better spacing */
-        text-align: center; /* Center the text within the cell */
-        font-weight: bold; /* Make the text bold */
-        border: 1px solid #e0e0e0; /* Optional: A light border to distinguish the block */
+        background-color: #ffcccb; /* Light red to highlight restriction */
+        color: #333; /* Darker color for better readability */
+        border-radius: 8px; /* More rounded corners */
+        padding: 10px; /* Improved padding */
+        text-align: center;
+        font-weight: bold; /* Emphasize restricted time */
+        border: 1px solid #e0e0e0; /* Subtle border for definition */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Light shadow for emphasis */
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .content-wrapper {
+          margin-left: 0;
+          padding: 20px;
+          width: 100%;
+        }
+
+        nav {
+          width: 100%;
+          height: auto;
+        }
+
+        nav a {
+          font-size: 15px;
+          padding: 10px;
+        }
+
+        table {
+          font-size: 14px;
+        }
       }
     </style>
   </head>

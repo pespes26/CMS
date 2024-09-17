@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Upload JSON File</title>
     <style>
+      /* Global Settings */
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Poppins", sans-serif; /* Modern and clean font */
         background-color: #f4f4f4;
         display: flex;
         flex-direction: column;
@@ -14,72 +15,91 @@
         margin: 0;
       }
 
+      /* Sidebar Navigation */
       nav {
-        width: 200px;
-        padding: 20px;
-        background-color: #f8f8f8;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        width: 220px;
+        padding: 25px;
+        background-color: #ffffff;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05); /* Light shadow for subtle depth */
         height: 100vh;
         box-sizing: border-box;
         position: fixed;
         left: 0;
         top: 0;
       }
+
       nav a {
         display: block;
-        padding: 10px 0;
-        color: black;
+        padding: 12px 0;
+        color: #34495e; /* Darker grey for modern look */
         text-decoration: none;
         font-size: 18px;
-        margin-bottom: 10px;
-      }
-      nav a:hover {
-        background-color: #e0e0e0;
-        border-left: 5px solid #73a4dd;
-        padding-left: 10px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
       }
 
+      nav a:hover {
+        background-color: #e0eaf4;
+        border-left: 5px solid #3498db; /* Modern blue hover effect */
+        padding-left: 15px;
+        color: #2980b9;
+      }
+
+      /* Upload Container */
       .upload-container {
         background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for lift */
         width: 400px;
-        margin-top: 100px; /* For spacing below the fixed navbar */
+        margin-top: 100px; /* Spacing below fixed navbar */
       }
 
       h1 {
         text-align: center;
-        color: #333;
+        color: #2c3e50; /* Dark blue-grey for title */
+        font-size: 24px;
+        margin-bottom: 20px;
       }
 
+      /* File Upload Section */
       .file-upload {
         margin: 20px 0;
         text-align: center;
       }
 
       input[type="file"] {
-        padding: 10px;
-        margin-bottom: 10px;
+        padding: 12px;
+        margin-bottom: 15px;
+        width: 100%; /* Full width for consistency */
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
       }
 
+      /* Upload Button */
       button {
-        background-color: #28a745;
+        background-color: #28a745; /* Green for action button */
         color: white;
-        padding: 10px 20px;
+        padding: 12px 20px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        transition: background-color 0.3s;
+        transition: background-color 0.3s ease;
+        width: 100%; /* Full width for consistency */
       }
 
       button:hover {
-        background-color: #218838;
+        background-color: #218838; /* Darker green on hover */
       }
 
+      /* Error Message */
       .message {
         text-align: center;
         color: red;
+        font-weight: bold;
+        margin-top: 15px;
       }
     </style>
   </head>

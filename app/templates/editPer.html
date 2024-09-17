@@ -9,18 +9,21 @@
       href="{{ url_for('static', filename='styles.css') }}"
     />
     <style>
+      /* Global settings */
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Poppins", sans-serif; /* Modern, clean font */
         margin: 0;
         padding: 0;
         display: flex;
+        background-color: #f5f5f5; /* Light grey background */
       }
 
+      /* Sidebar Navigation */
       nav {
-        width: 200px;
-        padding: 20px;
-        background-color: #f8f8f8;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        width: 220px;
+        padding: 25px;
+        background-color: #ffffff;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05); /* Light shadow for elegance */
         height: 100vh;
         box-sizing: border-box;
         position: fixed;
@@ -30,43 +33,52 @@
 
       nav a {
         display: block;
-        padding: 10px 0;
-        color: black;
+        padding: 12px 0;
+        color: #2c3e50; /* Dark blue-grey for modern feel */
         text-decoration: none;
-        font-size: 16px;
-        margin-bottom: 10px;
+        font-size: 17px; /* Slightly larger font for better readability */
+        margin-bottom: 15px;
+        border-left: 4px solid transparent; /* Improved hover effect */
+        transition: all 0.3s ease;
       }
 
       nav a:hover {
-        background-color: #e0e0e0;
-        border-left: 5px solid #73a4dd;
-        padding-left: 10px;
+        background-color: #e0eaf4; /* Soft hover effect */
+        border-left: 5px solid #3498db; /* Elegant blue border on hover */
+        padding-left: 15px;
+        color: #2980b9;
       }
 
+      /* Content Wrapper */
       .content-wrapper {
-        margin-left: 220px;
-        padding: 20px;
+        margin-left: 240px; /* Adjusted for wider sidebar */
+        padding: 40px;
         display: flex;
         justify-content: center;
         align-items: center;
-        width: calc(100% - 240px);
+        width: calc(100% - 260px);
         height: 100vh;
+        background-color: #f5f5f5;
       }
 
+      /* Form Container */
       .form-container {
         width: 100%;
         max-width: 600px;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Elegant shadow for lift */
       }
 
       h1 {
         margin-top: 0;
         text-align: center;
+        font-size: 24px;
+        color: #2c3e50;
       }
 
+      /* Form Styling */
       form {
         width: 100%;
         margin-bottom: 20px;
@@ -75,42 +87,51 @@
       label {
         font-weight: bold;
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
+        color: #34495e;
       }
 
       input,
       select {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         margin-bottom: 15px;
         box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
         font-size: 16px;
+        background-color: #fafafa; /* Light background for inputs */
       }
 
+      /* Submit Button */
       button {
-        padding: 10px 15px;
-        background-color: #73a4dd;
+        padding: 12px 20px;
+        background-color: #3498db; /* Modern blue for button */
         color: white;
         border: none;
+        border-radius: 5px;
         cursor: pointer;
         font-size: 16px;
-        display: block;
         width: 100%;
+        transition: background-color 0.3s ease;
       }
 
       button:hover {
-        background-color: #45a049;
+        background-color: #2980b9; /* Darker blue on hover */
       }
 
+      /* Remove Button */
       .remove-btn {
         background-color: #ff6347;
         margin-left: 10px;
+        width: auto;
       }
 
       .remove-btn:hover {
         background-color: #e55342;
       }
     </style>
+
     <script>
       function addRestrictedTime() {
         const container = document.getElementById("restricted-times-container");

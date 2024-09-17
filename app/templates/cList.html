@@ -9,17 +9,24 @@
       href="{{ url_for('static', filename='styles.css') }}"
     />
     <style>
+      /* Global Settings */
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Poppins", sans-serif; /* Modern, elegant font */
         margin: 0;
         padding: 0;
+        background-color: #f9f9f9; /* Light background for a cleaner look */
       }
 
+      /* Sidebar Navigation */
       nav {
-        width: 200px;
-        padding: 20px;
-        background-color: #f8f8f8;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        width: 250px;
+        padding: 30px;
+        background: linear-gradient(
+          180deg,
+          #ffffff,
+          #f4f4f4
+        ); /* Subtle gradient background */
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
         height: 100vh;
         box-sizing: border-box;
         position: fixed;
@@ -29,63 +36,78 @@
 
       nav a {
         display: block;
-        padding: 10px 0;
-        color: black;
+        padding: 15px 0;
+        color: #34495e; /* Modern dark blue for text */
         text-decoration: none;
-        font-size: 16px;
-        margin-bottom: 10px;
+        font-size: 18px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease; /* Smooth hover transition */
       }
 
       nav a:hover {
-        background-color: #e0e0e0;
-        border-left: 5px solid #73a4dd;
-        padding-left: 10px;
+        background-color: #e3eaf0;
+        border-left: 5px solid #3498db; /* Elegant modern blue */
+        padding-left: 15px;
+        color: #2980b9; /* Darker blue on hover */
       }
 
+      /* Content Wrapper */
       .content-wrapper {
-        margin-left: 220px;
-        padding: 20px;
-        width: calc(100% - 240px);
+        margin-left: 270px; /* Adjusted for wider sidebar */
+        padding: 40px;
+        width: calc(100% - 290px);
+        background-color: #ffffff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); /* Subtle shadow for content area */
+        border-radius: 10px; /* Rounded corners for modern elegance */
       }
 
+      /* Table Design */
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
-        table-layout: fixed; /* Ensures the columns take up equal space */
+        margin-top: 30px;
+        table-layout: fixed; /* Ensures equal space for columns */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for table */
       }
 
       th,
       td {
         border: 1px solid #ddd;
-        padding: 10px;
+        padding: 15px;
         text-align: center;
+        font-size: 18px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
       }
 
       th {
-        background-color: #73a4dd;
+        background-color: #3498db; /* Modern blue header */
         color: white;
+        font-weight: 600;
       }
 
       td {
-        background-color: #fff;
-        min-height: 50px;
+        background-color: #fefefe; /* Light background */
+        min-height: 60px;
       }
 
       .time-col {
-        width: 10%;
-        background-color: #f0f0f0;
+        width: 12%;
+        background-color: #f2f2f2; /* Slightly grey background for time */
       }
 
       .day-col {
-        width: 18%;
+        width: 20%;
       }
 
+      /* Button Design */
       button {
-        padding: 8px 12px;
+        padding: 10px 20px;
         border: none;
+        border-radius: 25px;
         cursor: pointer;
         font-size: 14px;
+        font-weight: 600;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
       }
 
       .edit-btn button {
@@ -95,6 +117,7 @@
 
       .edit-btn button:hover {
         background-color: #218838;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slight shadow on hover */
       }
 
       .delete-btn button {
@@ -104,8 +127,10 @@
 
       .delete-btn button:hover {
         background-color: #c82333;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slight shadow on hover */
       }
 
+      /* Form Inline */
       form {
         display: inline;
       }

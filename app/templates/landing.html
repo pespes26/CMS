@@ -9,72 +9,161 @@
       href="{{ url_for('static', filename='styles.css') }}"
     />
     <style>
+      /* Importing Google Font for modern typography */
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+      /* Global settings */
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Poppins", sans-serif; /* Modern, sleek font */
         display: flex;
         margin: 0;
         padding: 0;
+        background-color: #fafafa; /* Light grey background for elegant contrast */
+        color: #333;
       }
+
+      /* Navigation Styles */
       nav {
-        width: 200px;
-        padding: 20px;
-        background-color: #f8f8f8;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        width: 250px;
+        padding: 30px;
+        background: linear-gradient(
+          180deg,
+          #ffffff,
+          #f2f4f7
+        ); /* Subtle gradient background */
+        box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05); /* Soft shadow for modern depth */
         height: 100vh;
         box-sizing: border-box;
         position: fixed;
         left: 0;
         top: 0;
       }
+
       nav a {
         display: block;
-        padding: 10px 0;
-        color: black;
+        padding: 15px;
+        color: #34495e; /* Elegant dark blue text */
         text-decoration: none;
         font-size: 18px;
-        margin-bottom: 10px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        border-radius: 8px; /* Rounded corners for a modern look */
+        transition: all 0.3s ease; /* Smooth transition for hover effects */
       }
+
       nav a:hover {
-        background-color: #e0e0e0;
-        border-left: 5px solid #73a4dd;
-        padding-left: 10px;
+        background-color: #e3ecf6; /* Subtle hover effect */
+        color: #2980b9; /* Modern blue color on hover */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow to elevate hovered link */
+        padding-left: 20px; /* Elegant padding shift on hover */
       }
+
+      /* Content Wrapper Styles */
       .content-wrapper {
-        margin-left: 220px;
-        padding: 20px;
-        width: calc(100% - 240px);
+        margin-left: 270px; /* Spacing adjusted for wider nav */
+        padding: 40px;
+        width: calc(100% - 270px);
+        background-color: #ffffff; /* Clean white background for content */
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); /* Soft shadow for separation */
+        border-radius: 10px; /* Rounded corners for elegance */
+        transition: all 0.3s ease;
       }
+
       h1 {
         margin-top: 0;
-      }
-      .intro {
+        font-size: 36px;
+        font-weight: 600;
+        color: #2c3e50; /* Dark, elegant header color */
+        border-bottom: 2px solid #eaeaea;
+        padding-bottom: 15px;
         margin-bottom: 30px;
       }
+
+      /* Introductory text styling */
+      .intro {
+        margin-bottom: 30px;
+        font-size: 18px;
+        color: #7f8c8d; /* Lighter grey for body text */
+      }
+
+      /* Section Styling */
       .section {
         margin-bottom: 40px;
       }
+
       .section h2 {
-        font-size: 26px;
-        color: #415aa7;
+        font-size: 28px;
+        color: #2980b9; /* Modern blue section headers */
         border-bottom: 2px solid #b3b3b3;
         padding-bottom: 10px;
         margin-bottom: 20px;
       }
+
       .section p {
         font-size: 18px;
-        line-height: 1.6;
-        color: #333;
+        line-height: 1.7; /* More spacing for readability */
+        color: #555; /* Softer grey for text */
       }
+
+      /* List Styling */
       .section ul {
         margin: 20px 0;
         padding: 0;
         list-style: none;
       }
+
       .section ul li {
-        background: #f0f0f0;
-        padding: 10px;
+        background: #f7f9fb; /* Light background */
+        padding: 15px;
         margin-bottom: 10px;
-        border-left: 4px solid #73a4dd;
+        border-left: 5px solid #2980b9; /* Accent with modern blue */
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .section ul li:hover {
+        background-color: #e9f2f9; /* Slight hover effect */
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #3498db; /* Modern blue button */
+        color: #ffffff;
+        border-radius: 25px; /* Rounded pill-shaped button */
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 600;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .btn:hover {
+        background-color: #2980b9; /* Darker shade on hover */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slight shadow on hover */
+      }
+
+      /* Media Query for Mobile Responsiveness */
+      @media (max-width: 768px) {
+        nav {
+          width: 100%;
+          height: auto;
+          position: relative;
+        }
+
+        .content-wrapper {
+          margin-left: 0;
+          width: 100%;
+          padding: 20px;
+        }
+
+        nav a {
+          font-size: 16px;
+        }
+
+        h1 {
+          font-size: 28px;
+        }
       }
     </style>
   </head>

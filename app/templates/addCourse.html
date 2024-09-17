@@ -9,18 +9,21 @@
       href="{{ url_for('static', filename='styles.css') }}"
     />
     <style>
+      /* Global Settings */
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Poppins", sans-serif; /* Modern and clean font */
         display: flex;
         margin: 0;
         padding: 0;
+        background-color: #f4f4f9; /* Light background for a modern look */
       }
 
+      /* Sidebar Navigation */
       nav {
-        width: 200px;
-        padding: 20px;
-        background-color: #f8f8f8;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        width: 220px;
+        padding: 25px;
+        background-color: #ffffff;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow for depth */
         height: 100vh;
         box-sizing: border-box;
         position: fixed;
@@ -30,98 +33,135 @@
 
       nav a {
         display: block;
-        padding: 10px 0;
-        color: black;
+        padding: 12px 0;
+        color: #34495e; /* Dark grey for text */
         text-decoration: none;
-        font-size: 16px;
-        margin-bottom: 10px;
+        font-size: 17px; /* Slightly larger font for better readability */
+        margin-bottom: 15px;
+        border-left: 4px solid transparent;
+        transition: all 0.3s ease; /* Smooth transition for hover effects */
       }
 
       nav a:hover {
-        background-color: #e0e0e0;
-        border-left: 5px solid #73a4dd;
-        padding-left: 10px;
+        background-color: #f0f4fa;
+        border-left: 5px solid #3498db; /* Modern blue */
+        padding-left: 15px;
+        color: #2980b9;
       }
 
+      /* Content Wrapper */
       .content-wrapper {
-        margin-left: 220px;
-        padding: 20px;
-        width: calc(100% - 240px);
+        margin-left: 240px; /* Adjusted for sidebar width */
+        padding: 40px;
+        width: calc(100% - 260px);
         display: flex;
         flex-direction: column;
         align-items: center;
+        background-color: #fff;
+        border-radius: 10px; /* Rounded corners for a modern feel */
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); /* Light shadow to lift content */
       }
 
       h1 {
         margin-top: 0;
+        font-size: 32px; /* Larger, modern heading */
+        color: #2c3e50; /* Elegant dark blue */
       }
 
+      /* Form styling */
       form {
         width: 100%;
         max-width: 900px;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
         text-align: left;
-      }
-
-      .add-course-btn {
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        font-size: 17px;
-        cursor: pointer;
-      }
-
-      .add-course-btn:hover {
-        background-color: #45a049;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Soft shadow for form */
       }
 
       label {
         font-weight: bold;
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
+        color: #2c3e50;
       }
 
       input,
       select {
         width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
         box-sizing: border-box;
         font-size: 16px;
       }
 
+      /* Add Course Button */
+      .add-course-btn {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        font-size: 17px;
+        cursor: pointer;
+        border-radius: 25px; /* Rounded button */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .add-course-btn:hover {
+        background-color: #218838;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Shadow effect on hover */
+      }
+
+      /* General Buttons */
       button {
-        padding: 10px 15px;
+        padding: 10px 20px;
         background-color: #73a4dd;
         color: white;
         border: none;
         cursor: pointer;
         font-size: 16px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #5a92cc;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); /* Hover shadow effect */
       }
 
       .delete-btn {
-        background-color: red;
+        background-color: #dc3545;
       }
 
+      .delete-btn:hover {
+        background-color: #c82333;
+      }
+
+      /* Lecture and Practice Styling */
       .lecture,
       .practice {
-        background-color: #f0f0f0;
-        padding: 20px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        border: 1px solid #ddd;
+        background-color: #f4f4f9;
+        padding: 25px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
         display: flex;
         flex-direction: column;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05); /* Subtle shadow for lift */
       }
 
       .lecture-title,
       .practice-title {
         font-weight: bold;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         font-size: 18px;
+        color: #34495e;
       }
 
+      /* Flexbox for Form Layout */
       .flex-container {
         display: flex;
         flex-direction: column;
@@ -153,14 +193,14 @@
         }
       }
 
-      /* Pop-up notification */
+      /* Pop-up Notification */
       .popup {
         visibility: hidden;
         opacity: 0;
         position: fixed;
         bottom: 20px;
         right: 20px;
-        background-color: #4caf50;
+        background-color: #28a745;
         color: white;
         padding: 15px 20px;
         border-radius: 5px;
