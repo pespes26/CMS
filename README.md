@@ -77,12 +77,36 @@ pip install -r requirements.txt
 ## Required Packages:
 These packages are listed in the requirements.txt file and will be installed automatically:
 ```bash
-Flask==2.0.1
-Flask-SQLAlchemy==2.5.1
-Flask-Migrate==3.1.0
-psycopg2-binary==2.9.1
-Werkzeug==2.0.1
-SQLAlchemy==1.3.23
+alembic==1.13.2
+blinker==1.8.2
+click==8.1.7
+colorama==0.4.6
+et-xmlfile==1.1.0
+Flask==3.0.3
+Flask-Login==0.6.3
+Flask-Migrate==4.0.7
+Flask-SQLAlchemy==3.1.1
+greenlet==3.1.0
+gunicorn==23.0.0
+itsdangerous==2.2.0
+Jinja2==3.1.4
+Mako==1.3.5
+MarkupSafe==2.1.5
+numpy==2.1.0
+openpyxl==3.1.5
+packaging==24.1
+pandas==2.2.2
+psycopg2-binary==2.9.9
+python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
+pytz==2024.1
+six==1.16.0
+SQLAlchemy==2.0.34
+typing_extensions==4.12.2
+tzdata==2024.1
+Werkzeug==3.0.3
+psycopg2-binary==2.9.9 --only-binary psycopg2-binary
+
 ```
 ### Set up PostgreSQL:
 1. Install PostgreSQL on your machine and set up a new database.
