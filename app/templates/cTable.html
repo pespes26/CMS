@@ -6,152 +6,203 @@
     <title>Timetable</title>
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='styles.css') }}"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     />
     <style>
       /* Global Settings */
       body {
-        font-family: "Poppins", sans-serif; /* Modern and clean font */
+        font-family: "Poppins", sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f5f5f5; /* Light grey background for a clean look */
-      }
-
-      /* Sidebar Navigation */
-      nav {
-        width: 220px;
-        padding: 25px;
-        background-color: #ffffff;
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05); /* Lighter shadow for elegance */
-        height: 100vh;
-        box-sizing: border-box;
-        position: fixed;
-        left: 0;
-        top: 0;
-      }
-
-      nav a {
-        display: block;
-        padding: 12px 0;
-        color: #2c3e50; /* Dark blue-grey for modern look */
-        text-decoration: none;
-        font-size: 17px; /* Slightly larger for better readability */
-        margin-bottom: 15px;
-        transition: all 0.3s ease; /* Smooth hover effect */
-        border-left: 4px solid transparent; /* Added for hover transition */
-      }
-
-      nav a:hover {
-        background-color: #e0eaf4; /* Softer hover effect */
-        border-left: 5px solid #3498db; /* More refined blue accent */
-        padding-left: 15px;
-        color: #2980b9; /* Color shift for hover */
+        background-color: #f4f4f4; /* Light gray for a soft background */
+        color: #333; /* Dark gray text for readability */
       }
 
       /* Content Wrapper */
       .content-wrapper {
-        margin-left: 240px; /* Adjusted for sidebar width */
         padding: 40px;
-        width: calc(100% - 260px);
+        margin-top: 20px;
         background-color: #fff;
-        border-radius: 10px; /* Rounded corners for modern look */
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); /* Subtle shadow for elevation */
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
       }
 
-      /* Table Styles */
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 30px;
-        table-layout: fixed;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Light shadow under table */
-      }
-
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 15px;
-        text-align: center;
-        font-size: 16px;
-      }
-
-      th {
-        background-color: #3498db; /* Modern blue for header */
-        color: white;
-        font-weight: 600;
-      }
-
-      td {
-        background-color: #ffffff;
-        min-height: 50px;
-      }
-
-      /* Lecture Styling */
+      /* Lecture, Practice, and Restricted Time Block */
       .lecture {
-        background-color: #99f0ff; /* Light blue background */
-        color: black;
+        background-color: #5e89c0;
+        color: #333;
         border-radius: 8px;
         padding: 10px;
-        font-weight: bold; /* Bold text */
+        font-weight: bold;
+        border: 1px solid #8b7765; /* Matching border to the navbar color */
       }
 
-      /* Practice Styling */
       .practice {
-        background-color: #99ff99; /* Light green background */
-        color: black;
+        background-color: #7ab97a;
+        color: #333;
         border-radius: 8px;
         padding: 10px;
-        font-weight: bold; /* Bold text */
+        font-weight: bold;
+        border: 1px solid #8b7765; /* Matching border to the navbar color */
       }
 
-      /* Restricted Time Block */
       .restricted-time {
-        background-color: #ffcccb; /* Light red to highlight restriction */
-        color: #333; /* Darker color for better readability */
-        border-radius: 8px; /* More rounded corners */
-        padding: 10px; /* Improved padding */
+        background-color: #ffcccb;
+        color: #333;
+        border-radius: 8px;
+        padding: 10px;
         text-align: center;
-        font-weight: bold; /* Emphasize restricted time */
-        border: 1px solid #e0e0e0; /* Subtle border for definition */
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Light shadow for emphasis */
+        font-weight: bold;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      .timetable-table {
+        table-layout: fixed; /* Ensures all columns are of equal width */
+        width: 100%; /* Expands the table to fill the container width */
+      }
+
+      .timetable-table th,
+      .timetable-table td {
+        text-align: center;
+        vertical-align: middle;
+        word-wrap: break-word; /* Ensures content wraps properly */
+      }
+
+      /* Navbar and Buttons */
+      .navbar {
+        background-color: #8b7765;
+        position: relative; /* This creates the context for absolute positioning */
+      }
+
+      .navbar-brand {
+        position: absolute; /* Position the brand absolutely within the navbar */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Adjust to perfectly center */
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff !important;
+      }
+
+      .nav-link {
+        color: #f0e6d6 !important; /* Light cream color for a subtle link style */
+      }
+
+      .nav-link:hover {
+        color: #fff !important; /* White color on hover */
+      }
+
+      .btn-primary {
+        background-color: #8b7765; /* Matching the navbar color */
+        border: none;
+      }
+
+      .btn-primary:hover {
+        background-color: #715f53; /* Darker tone on hover for depth */
+      }
+
+      .card {
+        border: none;
+        background-color: #eae4d3; /* Soft off-white background for cards */
+        color: #333; /* Classic dark text */
+      }
+
+      .footer {
+        background-color: #8b7765;
+        color: #f0e6d6;
+      }
+
+      /* Center the button */
+      .btn-center {
+        display: flex;
+        justify-content: center;
       }
 
       /* Responsive adjustments */
       @media (max-width: 768px) {
         .content-wrapper {
-          margin-left: 0;
           padding: 20px;
-          width: 100%;
-        }
-
-        nav {
-          width: 100%;
-          height: auto;
-        }
-
-        nav a {
-          font-size: 15px;
-          padding: 10px;
-        }
-
-        table {
-          font-size: 14px;
         }
       }
     </style>
   </head>
   <body>
-    <nav>
-      <a href="{{ url_for('courses') }}">Course List</a>
-      <a href="{{ url_for('add_course') }}">Add Course</a>
-      <a href="{{ url_for('edit_pre') }}">Edit Preferences</a>
-      <a href="{{ url_for('upload_json') }}">Upload JSON</a>
-      <a href="{{ url_for('index') }}">Home Page</a>
+    <!-- Main Navbar -->
+    <!-- Updated Navbar Structure -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <!-- Dropdown for Navbar links on the left -->
+        <div class="dropdown me-auto">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenu2"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Menu
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <li>
+              <a class="dropdown-item" href="{{ url_for('courses') }}"
+                >Course List</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('timetable') }}"
+                >Timetable</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('add_course') }}"
+                >Add Course</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('edit_pre') }}"
+                >Edit Preferences</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('upload_json') }}"
+                >Upload JSON</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <!-- Centered brand name -->
+        <a class="navbar-brand mx-auto" href="{{ url_for('index') }}"
+          >Course Management System</a
+        >
+
+        <!-- Right Side User Section -->
+        <div class="d-flex align-items-center ms-auto">
+          {% if current_user.is_authenticated %}
+          <span class="text-white me-3"
+            >👋 Hello, {{ current_user.username }}</span
+          >
+          <a class="nav-link text-white me-2" href="{{ url_for('user') }}"
+            >User Profile</a
+          >
+          <a class="nav-link text-white" href="{{ url_for('logout') }}"
+            >Logout</a
+          >
+          {% else %}
+          <span class="text-white me-3">👋 Welcome, Guest</span>
+          <a class="nav-link text-white me-2" href="{{ url_for('login') }}"
+            >Login</a
+          >
+          <a class="nav-link text-white" href="{{ url_for('register') }}"
+            >Register</a
+          >
+          {% endif %}
+        </div>
+      </div>
     </nav>
 
-    <div class="content-wrapper">
+    <div class="container content-wrapper">
       <h1>Timetable</h1>
-      <table>
+      <table class="table table-bordered timetable-table">
         <thead>
           <tr>
             <th>Time</th>
@@ -188,10 +239,11 @@
         </tbody>
       </table>
     </div>
-    <!-- Display Errors if there are any -->
+
+    <!-- Display Errors elegantly -->
     {% if errors %}
-    <div style="color: rgb(136, 18, 18); font-weight: bold">
-      <h2>Scheduling Issues:</h2>
+    <div class="alert alert-danger mt-4">
+      <h4>Scheduling Issues:</h4>
       <ul>
         {% for error in errors %}
         <li>{{ error }}</li>
@@ -199,5 +251,8 @@
       </ul>
     </div>
     {% endif %}
+
+    <!-- Bootstrap 5 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

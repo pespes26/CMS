@@ -1,21 +1,87 @@
 from flask import render_template, request, redirect, url_for, flash
 from app import app, db
-from app.models import Course, LectureTime, PracticeTime
+from app.models import Course, LectureTime, PracticeTime , AppUser
+from flask_login import login_required, current_user , login_user ,logout_user
 from sqlalchemy.exc import SQLAlchemyError
 from datetime import time,datetime
 import json
 from werkzeug.utils import secure_filename
 import os
+from werkzeug.security import generate_password_hash , check_password_hash
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('login'))
+
+@app.route('/user')
+@login_required  # This decorator ensures that only logged-in users can access the profile
+def user():
+    # Render a user profile page, passing the current user information
+    return render_template('user.html', user=current_user)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = AppUser.query.filter_by(username=username).first()
+
+        if user and user.verify_password(password):
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            flash('Invalid username or password.', 'danger')
+            return redirect(url_for('login'))
+
+    return render_template('login.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        existing_user = AppUser.query.filter_by(username=username).first()
+
+        if existing_user:
+            flash('Username is already taken.', 'danger')
+            return redirect(url_for('register'))
+
+        new_user = AppUser(username=username, email=email, password=generate_password_hash(password))
+        db.session.add(new_user)
+        db.session.commit()
+        flash('Registration successful! You can now log in.', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
 
 
 @app.route('/add_course', methods=['GET', 'POST'])
+@login_required  # Ensure the user is logged in
 def add_course():
     if request.method == 'POST':
         try:
-            # Add course details
+            # Debug: Verify if current_user is set correctly
+            print(f"Current user: {current_user}")  # Check if current_user is available
+            print(f"Current User ID: {current_user.id}")  # Check the ID value
+            
+            # Check if current_user.id is None
+            if current_user.id is None:
+                flash("User ID is not available. Please ensure you are logged in.", 'danger')
+                return redirect(url_for('add_course'))
+
+            # Add course details and link to current user
             course_name = request.form['name']
             coursenumber = request.form['courseID']
-            new_course = Course(name=course_name, coursenumber=coursenumber)
+            new_course = Course(
+                name=course_name,
+                coursenumber=coursenumber,
+                user_id=current_user.id  # Link course to the current user
+            )
             db.session.add(new_course)
             db.session.commit()
 
@@ -26,7 +92,8 @@ def add_course():
             lecture_buildings = request.form.getlist('lecture_building[]')
             lecture_classrooms = request.form.getlist('lecture_classroom[]')
 
-            for day, start_time, end_time, building, classroom in zip(lecture_days, lecture_start_times, lecture_end_times, lecture_buildings, lecture_classrooms):
+            for day, start_time, end_time, building, classroom in zip(
+                lecture_days, lecture_start_times, lecture_end_times, lecture_buildings, lecture_classrooms):
                 building = "Online" if building == "0" else building
                 classroom = "Online" if classroom == "0" else classroom
 
@@ -47,7 +114,8 @@ def add_course():
             practice_buildings = request.form.getlist('practice_building[]')
             practice_classrooms = request.form.getlist('practice_classroom[]')
 
-            for day, start_time, end_time, building, classroom in zip(practice_days, practice_start_times, practice_end_times, practice_buildings, practice_classrooms):
+            for day, start_time, end_time, building, classroom in zip(
+                practice_days, practice_start_times, practice_end_times, practice_buildings, practice_classrooms):
                 building = "Online" if building == "0" else building
                 classroom = "Online" if classroom == "0" else classroom
 
@@ -62,26 +130,38 @@ def add_course():
                 db.session.add(new_practice)
 
             db.session.commit()
-            flash('Course added successfully!', 'success')
             return redirect(url_for('courses'))
 
         except SQLAlchemyError as e:
             db.session.rollback()
-            flash(f"An error occurred: {str(e)}", 'danger')
+            print(f"SQLAlchemy Error: {str(e)}")  # Additional debug statement
+            flash(f"An error occurred while adding the course: {str(e)}", 'danger')
             return redirect(url_for('add_course'))
 
     return render_template('addCourse.html')
 
+
 @app.route('/')
+@login_required
 def index():
     return render_template('landing.html')
 
 @app.route('/courses')
+@login_required
 def courses():
-    all_courses = Course.query.all()
-    return render_template('cList.html', courses=all_courses)
+    # Fetch only the courses that belong to the current logged-in user
+    user_courses = Course.query.filter_by(user_id=current_user.id).all()
+    
+    # Example initialization of schedule with default values to avoid missing keys
+    schedule = {day: {hour: None for hour in range(8, 22)} for day in ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']}
+    
+    # Populate `schedule` as needed
+    # Add logic here to populate `schedule` with actual data related to the user's courses
+
+    return render_template('cList.html', courses=user_courses, schedule=schedule)
 
 @app.route('/ctable')
+@login_required
 def timetable():
     # Query all the courses and their lectures/practices from the database
     courses = Course.query.all()
@@ -131,6 +211,7 @@ def timetable():
     return render_template('cTable.html', schedule=schedule)
 
 @app.route('/edit_course_details/<int:course_id>', methods=['GET', 'POST'])
+@login_required
 def edit_course_details(course_id):
     course = Course.query.get_or_404(course_id)
 
@@ -168,6 +249,7 @@ def edit_course_details(course_id):
     return render_template('editCourseDetails.html', course=course, lectures=lectures, practices=practices)
 
 @app.route('/delete_course/<int:course_id>', methods=['POST'])
+@login_required
 def delete_course(course_id):
     course = Course.query.get_or_404(course_id)
     db.session.delete(course)
@@ -176,6 +258,7 @@ def delete_course(course_id):
     return redirect(url_for('courses'))
 
 @app.route('/course/<int:course_id>/edit_lecture/<int:lecture_id>', methods=['GET', 'POST'])
+@login_required
 def edit_lecture(course_id, lecture_id):
     course = Course.query.get_or_404(course_id)
     lecture = LectureTime.query.get_or_404(lecture_id)
@@ -194,6 +277,7 @@ def edit_lecture(course_id, lecture_id):
     return render_template('editLecture.html', course=course, lecture=lecture)
 
 @app.route('/course/<int:course_id>/edit_practice/<int:practice_id>', methods=['GET', 'POST'])
+@login_required
 def edit_practice(course_id, practice_id):
     course = Course.query.get_or_404(course_id)
     practice = PracticeTime.query.get_or_404(practice_id)
@@ -212,6 +296,7 @@ def edit_practice(course_id, practice_id):
     return render_template('editPractice.html', course=course, practice=practice)
 
 @app.route('/edit_pre', methods=['GET', 'POST'])
+@login_required
 def edit_pre():
     if request.method == 'POST':
         # Gather preferences from form
@@ -337,7 +422,6 @@ def generate_optimal_schedule(courses, schedule_pref, restricted_times):
 
     return timetable, scheduling_errors
   
-
 def spread_courses_across_days(timetable, schedule):
     """Spread courses evenly across the week, avoiding conflicts."""
     for course, slot in schedule:
@@ -351,7 +435,6 @@ def spread_courses_across_days(timetable, schedule):
                     timetable[target_day][hour] = f"{course.name} ({slot['type']})"
                 break
     return timetable
-
 
 def pack_courses_into_fewer_days(timetable, schedule):
     """Pack courses into fewer days while avoiding entirely empty days."""
@@ -375,7 +458,6 @@ def pack_courses_into_fewer_days(timetable, schedule):
                     break
 
     return timetable
-
 
 # Route for generating the timetable
 @app.route('/genetable', methods=['GET', 'POST'])
@@ -420,16 +502,20 @@ def save_data_to_db(data):
 UPLOAD_FOLDER = 'uploads'  # Folder to store uploaded files
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Create folder if it doesn't exist
 
+
 @app.route('/upload_json', methods=['GET', 'POST'])
+@login_required
 def upload_json():
     if request.method == 'POST':
         if 'json_file' not in request.files:
-            return "No file part", 400
+            flash("No file part in the request", "danger")
+            return redirect(request.url)
 
         file = request.files['json_file']
 
         if file.filename == '':
-            return "No selected file", 400
+            flash("No file selected", "danger")
+            return redirect(request.url)
 
         if file and file.filename.endswith('.json'):
             try:
@@ -451,10 +537,11 @@ def upload_json():
                 for course_data in data['courses']:
                     new_course = Course(
                         name=course_data['name'],
-                        coursenumber=course_data['coursenumber']
+                        coursenumber=course_data['coursenumber'],
+                        user_id=current_user.id  # Link course to the logged-in user
                     )
                     db.session.add(new_course)
-                    db.session.flush()  # Get the course ID for foreign keys
+                    db.session.flush()  # Flush to get the course ID for foreign keys
 
                     # Add lectures
                     for lecture_data in course_data.get('lectures', []):
@@ -487,10 +574,17 @@ def upload_json():
                 return redirect(url_for('courses'))
 
             except json.JSONDecodeError as e:
-                return f'Error decoding JSON: {str(e)}', 400
+                flash(f'Error decoding JSON: {str(e)}', 'danger')
+                return redirect(request.url)
+            except SQLAlchemyError as e:
+                db.session.rollback()
+                flash(f'Error saving data: {str(e)}', 'danger')
+                return redirect(request.url)
             except Exception as e:
-                return f'Error saving data: {str(e)}', 500
+                flash(f'An unexpected error occurred: {str(e)}', 'danger')
+                return redirect(request.url)
 
-        return "Invalid file format. Please upload a JSON file.", 400
+        flash("Invalid file format. Please upload a JSON file.", 'danger')
+        return redirect(request.url)
 
     return render_template('upload_json.html')

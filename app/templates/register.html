@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Classic color theme */
+      body {
+        background-color: #f4f4f4;
+        color: #333;
+      }
+      .navbar {
+        background-color: #8b7765;
+      }
+      .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff !important;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .btn-primary {
+        background-color: #8b7765;
+        border: none;
+      }
+      .btn-primary:hover {
+        background-color: #715f53;
+      }
+      .card {
+        border: none;
+        background-color: #eae4d3;
+        color: #333;
+      }
+      .btn-center {
+        display: flex;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a class="navbar-brand" href="{{ url_for('index') }}"
+        >Course Management System</a
+      >
+    </nav>
+    <div class="container mt-5">
+      <div class="card mx-auto" style="max-width: 400px">
+        <div class="card-body">
+          <h5 class="card-title text-center">Register</h5>
+          <form action="{{ url_for('register') }}" method="POST">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                required
+              />
+            </div>
+            <div class="btn-center">
+              <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+          </form>
+          <p class="text-center mt-3">
+            Already have an account?
+            <a href="{{ url_for('login') }}">Login here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Alert Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div class="container mt-3">
+      {% for category, message in messages %}
+      <div
+        class="alert alert-{{ category }} alert-dismissible fade show"
+        role="alert"
+      >
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %} {% endwith %}
+  </body>
+</html>

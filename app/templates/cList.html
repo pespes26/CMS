@@ -3,158 +3,192 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Course List</title>
+    <title>Timetable</title>
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='styles.css') }}"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     />
     <style>
-      /* Global Settings */
+      /* Global Styles */
       body {
-        font-family: "Poppins", sans-serif; /* Modern, elegant font */
+        font-family: "Poppins", sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
         margin: 0;
         padding: 0;
-        background-color: #f9f9f9; /* Light background for a cleaner look */
       }
 
-      /* Sidebar Navigation */
-      nav {
-        width: 250px;
-        padding: 30px;
-        background: linear-gradient(
-          180deg,
-          #ffffff,
-          #f4f4f4
-        ); /* Subtle gradient background */
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-        height: 100vh;
-        box-sizing: border-box;
-        position: fixed;
-        left: 0;
-        top: 0;
+      /* Navbar */
+      .navbar {
+        background-color: #8b7765;
+        position: relative; /* This creates the context for absolute positioning */
       }
 
-      nav a {
-        display: block;
-        padding: 15px 0;
-        color: #34495e; /* Modern dark blue for text */
-        text-decoration: none;
-        font-size: 18px;
-        margin-bottom: 15px;
-        transition: all 0.3s ease; /* Smooth hover transition */
+      .navbar-brand {
+        position: absolute; /* Position the brand absolutely within the navbar */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Adjust to perfectly center */
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff !important;
       }
 
-      nav a:hover {
-        background-color: #e3eaf0;
-        border-left: 5px solid #3498db; /* Elegant modern blue */
-        padding-left: 15px;
-        color: #2980b9; /* Darker blue on hover */
-      }
-
-      /* Content Wrapper */
-      .content-wrapper {
-        margin-left: 270px; /* Adjusted for wider sidebar */
-        padding: 40px;
-        width: calc(100% - 290px);
+      .dropdown-menu {
         background-color: #ffffff;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); /* Subtle shadow for content area */
-        border-radius: 10px; /* Rounded corners for modern elegance */
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
       }
 
-      /* Table Design */
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 30px;
-        table-layout: fixed; /* Ensures equal space for columns */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for table */
+      /* Main Content */
+      .content-wrapper {
+        padding: 40px;
+        margin-top: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 95%; /* Increase the max-width to make it more expansive */
+        margin-left: auto;
+        margin-right: auto;
       }
 
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 15px;
+      /* Table Styles */
+      .table {
+        width: 100%; /* Make the table take full width of its container */
+        margin-top: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .table th,
+      .table td {
+        padding: 20px;
         text-align: center;
-        font-size: 18px;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
       }
 
-      th {
-        background-color: #3498db; /* Modern blue header */
-        color: white;
-        font-weight: 600;
+      .table td {
+        background-color: #fefefe;
+        text-align: center;
+        vertical-align: middle;
+        padding: 20px;
       }
 
-      td {
-        background-color: #fefefe; /* Light background */
-        min-height: 60px;
+      .lecture {
+        background-color: #535c5e;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 8px;
       }
 
-      .time-col {
-        width: 12%;
-        background-color: #f2f2f2; /* Slightly grey background for time */
+      .practice {
+        background-color: #8a9c69;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 8px;
       }
 
-      .day-col {
-        width: 20%;
+      .restricted-time {
+        background-color: #ffcccb;
+        color: #333;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
       }
 
-      /* Button Design */
-      button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 25px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 600;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-      }
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .content-wrapper {
+          padding: 20px;
+        }
 
-      .edit-btn button {
-        background-color: #28a745;
-        color: white;
-      }
-
-      .edit-btn button:hover {
-        background-color: #218838;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slight shadow on hover */
-      }
-
-      .delete-btn button {
-        background-color: #dc3545;
-        color: white;
-      }
-
-      .delete-btn button:hover {
-        background-color: #c82333;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slight shadow on hover */
-      }
-
-      /* Form Inline */
-      form {
-        display: inline;
+        .table {
+          font-size: 14px;
+        }
       }
     </style>
   </head>
   <body>
-    <nav>
-      <a href="{{ url_for('timetable') }}">Timetable</a>
-      <a href="{{ url_for('add_course') }}">Add Course</a>
-      <a href="{{ url_for('edit_pre') }}">Edit Preferences</a>
-      <a href="{{ url_for('upload_json') }}">Upload JSON</a>
-      <a href="{{ url_for('index') }}">Home Page</a>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenu2"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Menu
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+          <li>
+            <a class="dropdown-item" href="{{ url_for('courses') }}"
+              >Course List</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="{{ url_for('timetable') }}"
+              >Timetable</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="{{ url_for('add_course') }}"
+              >Add Course</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="{{ url_for('edit_pre') }}"
+              >Edit Preferences</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="{{ url_for('upload_json') }}"
+              >Upload JSON</a
+            >
+          </li>
+        </ul>
+
+        <!-- Centered brand name -->
+        <a class="navbar-brand" href="{{ url_for('index') }}"
+          >Course Management System</a
+        >
+
+        <!-- Right Side User Section -->
+        <div class="d-flex align-items-center ms-auto">
+          {% if current_user.is_authenticated %}
+          <span class="text-white me-3"
+            >👋 Hello, {{ current_user.username }}</span
+          >
+          <a class="nav-link text-white me-2" href="{{ url_for('user') }}"
+            >User Profile</a
+          >
+          <a class="nav-link text-white" href="{{ url_for('logout') }}"
+            >Logout</a
+          >
+          {% else %}
+          <span class="text-white me-3">👋 Welcome, Guest</span>
+          <a class="nav-link text-white me-2" href="{{ url_for('login') }}"
+            >Login</a
+          >
+          <a class="nav-link text-white" href="{{ url_for('register') }}"
+            >Register</a
+          >
+          {% endif %}
+        </div>
+      </div>
     </nav>
 
     <div class="content-wrapper">
       <h1>Course List</h1>
-      <table>
+      <table class="table table-bordered">
         <thead>
           <tr>
             <th>Course Number</th>
             <th>Course Name</th>
             <th>Lectures</th>
             <th>Practices</th>
-            <th>Actions</th>
+            <th class="actions-column">Actions</th>
+            <!-- Add the class here -->
           </tr>
         </thead>
         <tbody>
@@ -186,21 +220,24 @@
               <p>No Practices</p>
               {% endfor %}
             </td>
-            <td>
+            <td class="actions-column">
+              <!-- Add the class here -->
               <!-- Edit button -->
               <a
                 href="{{ url_for('edit_course_details', course_id=course.id) }}"
                 class="edit-btn"
               >
-                <button>Edit</button>
+                <button class="btn btn-success btn-sm">Edit</button>
               </a>
               <!-- Delete button -->
               <form
                 action="{{ url_for('delete_course', course_id=course.id) }}"
                 method="POST"
-                class="delete-btn"
+                class="delete-btn d-inline"
               >
-                <button type="submit">Delete</button>
+                <button type="submit" class="btn btn-danger btn-sm">
+                  Delete
+                </button>
               </form>
             </td>
           </tr>
@@ -208,5 +245,8 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

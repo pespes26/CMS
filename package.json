@@ -1,0 +1,19 @@
+{
+  "name": "cms-project",
+  "version": "1.0.0",
+  "description": "Course Management System using Tailwind CSS and DaisyUI",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "npx tailwindcss -i ./app/static/tailwind.css -o ./app/static/output.css --watch"
+  },
+  "dependencies": {
+    "daisyui": "^4.12.10"
+  },
+  "author": "Bar",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.12"
+  }
+}

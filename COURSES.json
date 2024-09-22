@@ -1,0 +1,234 @@
+{
+  "courses": [
+    {
+      "name": "Intro to Economics",
+      "coursenumber": "142.1.3141",
+      "lectures": [
+        {
+          "day": "Sunday",
+          "start_time": "15:00",
+          "end_time": "18:00",
+          "building": "35",
+          "classroom": "310"
+        },
+        {
+          "day": "Friday",
+          "start_time": "08:00",
+          "end_time": "11:00",
+          "building": "0",
+          "classroom": "0"
+        }
+      ],
+      "practices": [
+        {
+          "day": "Tuesday",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "building": "97",
+          "classroom": "202"
+        },
+        {
+            "day": "Wednesday",
+            "start_time": "16:00",
+            "end_time": "18:00",
+            "building": "34",
+            "classroom": "7"
+          },
+          {
+            "day": "Friday",
+            "start_time": "11:00",
+            "end_time": "13:00",
+            "building": "0",
+            "classroom": "0"
+          }
+      ]
+    },
+    {
+      "name":"Software quality engineering",
+      "coursenumber": "372.1.3501",
+      "lectures":[
+        {
+          "day": "Monday",
+          "start_time": "09:00",
+          "end_time": "12:00",
+          "building": "92",
+          "classroom": "2"
+        }
+      ],
+      "practices":[
+    {
+        "day": "Monday",
+        "start_time": "14:00",
+        "end_time": "15:00",
+        "building": "90",
+        "classroom": "137"
+    },{
+      "day": "Monday",
+      "start_time": "13:00",
+      "end_time": "14:00",
+      "building": "90",
+      "classroom": "137"
+    },{
+      "day": "Thursday",
+      "start_time": "16:00",
+      "end_time": "17:00",
+      "building": "90",
+      "classroom": "137"
+    },{
+      "day": "Thursday",
+      "start_time": "17:00",
+      "end_time": "18:00",
+      "building": "90",
+      "classroom": "137"
+    },{
+      "day": "Thursday",
+      "start_time": "18:00",
+      "end_time": "19:00",
+      "building": "90",
+      "classroom": "137"
+    }
+      ]
+    },{
+      "name":"Estimation and hypothesis tests",
+      "coursenumber": "372.1.2021",
+      "lectures":[
+        {
+          "day": "Friday",
+          "start_time": "11:00",
+          "end_time": "14:00",
+          "building": "0",
+          "classroom": "0" 
+        }
+      ],
+      "practices": [
+      {
+        "day": "Tuesday",
+        "start_time": "15:00",
+        "end_time": "16:00",
+        "building": "90",
+        "classroom": "136" 
+      },{
+        "day": "Tuesday",
+        "start_time": "13:00",
+        "end_time": "14:00",
+        "building": "72",
+        "classroom": "122" 
+      },{
+        "day": "Tuesday",
+        "start_time": "14:00",
+        "end_time": "15:00",
+        "building": "90",
+        "classroom": "135" 
+      },{
+        "day": "Tuesday",
+        "start_time": "12:00",
+        "end_time": "13:00",
+        "building": "72",
+        "classroom": "122" 
+      }
+    ]
+    },{
+      "name":"Structure of computer systems",
+      "coursenumber": "372.1.2501",
+      "lectures":[
+        {
+          "day": "Monday",
+          "start_time": "09:00",
+          "end_time": "12:00",
+          "building": "26",
+          "classroom": "6" 
+        }
+      ],
+      "practices":[
+        {
+          "day": "Thursday",
+          "start_time": "12:00",
+          "end_time": "13:00",
+          "building": "34",
+          "classroom": "9" 
+        },{
+          "day": "Thursday",
+          "start_time": "13:00",
+          "end_time": "14:00",
+          "building": "90",
+          "classroom": "229" 
+        },{
+          "day": "Thursday",
+          "start_time": "11:00",
+          "end_time": "12:00",
+          "building": "34",
+          "classroom": "107" 
+        },{
+          "day": "Tuesday",
+          "start_time": "11:00",
+          "end_time": "12:00",
+          "building": "34",
+          "classroom": "3"  
+        },{
+          "day": "Tuesday",
+          "start_time": "12:00",
+          "end_time": "13:00",
+          "building": "34",
+          "classroom": "107" 
+        },{
+          "day": "Tuesday",
+          "start_time": "13:00",
+          "end_time": "14:00",
+          "building": "90",
+          "classroom": "140" 
+        }
+      ]
+    },{
+      "name":"Algorithms",
+      "coursenumber": "372.1.2051",
+      "lectures":[
+        {
+          "day": "Monday",
+          "start_time": "09:00",
+          "end_time": "12:00",
+          "building": "90",
+          "classroom":"326"
+        },{
+          "day": "Tuesday",
+          "start_time": "10:00",
+          "end_time": "13:00",
+          "building": "90",
+          "classroom": "227"
+        }
+      ],
+      "practices":[
+        {
+          "day": "Wednesday",
+          "start_time": "10:00",
+          "end_time": "12:00",
+          "building": "1",
+          "classroom": "1"
+        },{
+          "day": "Tuesday",
+          "start_time": "12:00",
+          "end_time": "14:00",
+          "building": "1",
+          "classroom": "1"
+        },{
+          "day": "Thursday",
+          "start_time": "12:00",
+          "end_time": "14:00",
+          "building": "72",
+          "classroom": "122"
+        },{
+          "day": "Thursday",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "building": "90",
+          "classroom": "224"
+        },{
+          "day": "Thursday",
+          "start_time": "14:00",
+          "end_time": "13:00",
+          "building": "90",
+          "classroom": "224"
+        }
+      ]
+    }
+  ]
+}

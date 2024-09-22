@@ -4,97 +4,88 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Upload JSON File</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <style>
-      /* Global Settings */
+      /* Global Styles */
       body {
-        font-family: "Poppins", sans-serif; /* Modern and clean font */
-        background-color: #f4f4f4;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        font-family: "Poppins", sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
         margin: 0;
+        padding: 0;
       }
 
-      /* Sidebar Navigation */
-      nav {
-        width: 220px;
-        padding: 25px;
+      /* Navbar */
+      .navbar {
+        background-color: #8b7765;
+        position: relative; /* This creates the context for absolute positioning */
+      }
+
+      .navbar-brand {
+        position: absolute; /* Position the brand absolutely within the navbar */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Adjust to perfectly center */
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff !important;
+      }
+
+      .nav-link {
+        color: #f0e6d6 !important;
+      }
+
+      .nav-link:hover {
+        color: #fff !important;
+      }
+
+      .dropdown-menu {
         background-color: #ffffff;
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05); /* Light shadow for subtle depth */
-        height: 100vh;
-        box-sizing: border-box;
-        position: fixed;
-        left: 0;
-        top: 0;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
       }
 
-      nav a {
-        display: block;
-        padding: 12px 0;
-        color: #34495e; /* Darker grey for modern look */
-        text-decoration: none;
-        font-size: 18px;
-        margin-bottom: 15px;
-        transition: all 0.3s ease;
-        border-left: 4px solid transparent;
-      }
-
-      nav a:hover {
-        background-color: #e0eaf4;
-        border-left: 5px solid #3498db; /* Modern blue hover effect */
-        padding-left: 15px;
-        color: #2980b9;
-      }
-
-      /* Upload Container */
+      /* Main Content */
       .upload-container {
-        background-color: #fff;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for lift */
-        width: 400px;
-        margin-top: 100px; /* Spacing below fixed navbar */
+        padding: 40px;
+        margin: 50px auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        text-align: center;
       }
 
       h1 {
-        text-align: center;
-        color: #2c3e50; /* Dark blue-grey for title */
         font-size: 24px;
+        color: #2c3e50;
         margin-bottom: 20px;
-      }
-
-      /* File Upload Section */
-      .file-upload {
-        margin: 20px 0;
-        text-align: center;
       }
 
       input[type="file"] {
         padding: 12px;
         margin-bottom: 15px;
-        width: 100%; /* Full width for consistency */
+        width: 100%;
         font-size: 16px;
         border: 1px solid #ccc;
         border-radius: 5px;
       }
 
-      /* Upload Button */
-      button {
-        background-color: #28a745; /* Green for action button */
-        color: white;
-        padding: 12px 20px;
+      .btn-submit {
+        background-color: #8b7765;
         border: none;
-        border-radius: 5px;
-        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+        padding: 10px;
+        color: #fff;
         transition: background-color 0.3s ease;
-        width: 100%; /* Full width for consistency */
       }
 
-      button:hover {
-        background-color: #218838; /* Darker green on hover */
+      .btn-submit:hover {
+        background-color: #715f53;
       }
 
-      /* Error Message */
       .message {
         text-align: center;
         color: red;
@@ -104,32 +95,99 @@
     </style>
   </head>
   <body>
-    <nav>
-      <a href="{{ url_for('courses') }}">Course List</a>
-      <a href="{{ url_for('timetable') }}">Timetable</a>
-      <a href="{{ url_for('add_course') }}">Add Course</a>
-      <a href="{{ url_for('upload_json') }}">Upload JSON</a>
-      <a href="{{ url_for('index') }}">Home Page</a>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <!-- Left Side: Dropdown Menu Button -->
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Menu
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+              <a class="dropdown-item" href="{{ url_for('courses') }}"
+                >Courses</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('timetable') }}"
+                >Timetable</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('edit_pre') }}"
+                >Edit Preferences</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('upload_json') }}"
+                >Upload JSON</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <!-- Centered brand name -->
+        <a class="navbar-brand" href="{{ url_for('index') }}"
+          >Course Management System</a
+        >
+
+        <!-- Right Side: User Information -->
+        <div class="d-flex align-items-center ms-auto">
+          {% if current_user.is_authenticated %}
+          <span class="text-white me-3"
+            >👋 Hello, {{ current_user.username }}</span
+          >
+          <a class="nav-link text-white me-2" href="{{ url_for('user') }}"
+            >User Profile</a
+          >
+          <a class="nav-link text-white" href="{{ url_for('logout') }}"
+            >Logout</a
+          >
+          {% else %}
+          <span class="text-white me-3">👋 Welcome, Guest</span>
+          <a class="nav-link text-white me-2" href="{{ url_for('login') }}"
+            >Login</a
+          >
+          <a class="nav-link text-white" href="{{ url_for('register') }}"
+            >Register</a
+          >
+          {% endif %}
+        </div>
+      </div>
     </nav>
+
     <div class="upload-container">
       <h1>Upload JSON File</h1>
       {% if message %}
       <p class="message">{{ message }}</p>
       {% endif %}
-      <!-- upload_json.html -->
       <form
         method="POST"
         enctype="multipart/form-data"
         action="{{ url_for('upload_json') }}"
       >
-        <div>
-          <label for="json_file">Upload JSON File:</label>
-          <input type="file" name="json_file" id="json_file" accept=".json" />
+        <div class="mb-3">
+          <label for="json_file" class="form-label">Upload JSON File:</label>
+          <input
+            type="file"
+            class="form-control"
+            name="json_file"
+            id="json_file"
+            accept=".json"
+          />
         </div>
-        <div>
-          <button type="submit">Upload</button>
-        </div>
+        <button type="submit" class="btn btn-submit">Upload</button>
       </form>
     </div>
+
+    <!-- Bootstrap JS (for interactive elements) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
